@@ -21,7 +21,7 @@ contract('Varanida - Minting', function(accounts) {
       }).then(function(result){
         assert(result.toNumber()===mintedAmount);
       }).then(function() {
-          return vara.mintToken(random_guy, mintedAmount, {from: owner});
+        return vara.mintToken(random_guy, mintedAmount, {from: owner});
       }).then(function() {
         return vara.balanceOf(random_guy, {from: owner});
       }).then(function(result){

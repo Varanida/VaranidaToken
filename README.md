@@ -18,5 +18,6 @@
 
 ### How to run the app   
 
-
-And run api `npm start`
+```
+npm start
+```

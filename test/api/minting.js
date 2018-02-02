@@ -23,7 +23,7 @@ function getBalance(address, callback) {
   .expect(200)
   .expect('Content-Type', /json/)
   .end(function(err, res){
-    res.body.should.have.property('balance').and.be.eql('100000000');
+    res.body.should.be.eql('100000000');
     callback(null);
   });
 }
