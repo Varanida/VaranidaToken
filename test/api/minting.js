@@ -10,7 +10,6 @@ function mint(address, callback) {
   .expect(200)
   .expect('Content-Type', /json/)
   .end(function(err, res){
-    console.log(res);
     res.body.should.have.property('success').which.is.a.Boolean();
     res.body.success.should.be.eql(true);
     callback(null, address);

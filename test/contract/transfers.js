@@ -6,8 +6,8 @@ contract('Varanida - Transfers', function(accounts) {
 
   let owner = accounts[0],
   bad_guy = accounts[1],
-  random_guy = accounts[4],
-  random_guy2 = accounts[5],
+  random_guy = accounts[2],
+  random_guy2 = accounts[3],
   mintedAmount = 100000000,
   transferAmount = 20000000;
 
