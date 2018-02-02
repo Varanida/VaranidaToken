@@ -42,17 +42,4 @@ contract('Varanida - Minting', function(accounts) {
       });
   });
 
-  it("should let everyone see every balances", function() {
-    var vara;
-    return Varanida.deployed()
-      .then(function(instance) {
-        vara = instance;
-        return vara.mintToken(random_guy2, mintedAmount, {from: owner});
-      }).then(function() {
-        return vara.balanceOf(random_guy2, {from: random_guy});
-      }).then(function(result){
-        assert(result.toNumber()===mintedAmount);
-      });
-  });
-
 });
