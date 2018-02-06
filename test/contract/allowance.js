@@ -8,7 +8,7 @@ contract('Varanida - Allowance', function(accounts) {
   bad_guy = accounts[1],
   random_guy = accounts[2],
   random_guy2 = accounts[3],
-  mintedAmount = 100000000;
+  mintedAmount = 1*Math.pow(10,18);
 
   it("should allow people to allow transfers", function() {
     var vara;

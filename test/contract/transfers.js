@@ -8,8 +8,8 @@ contract('Varanida - Transfers', function(accounts) {
   bad_guy = accounts[1],
   random_guy = accounts[2],
   random_guy2 = accounts[3],
-  mintedAmount = 100000000,
-  transferAmount = 20000000;
+  mintedAmount = 1*Math.pow(10,18),
+  transferAmount = 0.5*Math.pow(10,18);
 
   it("should not let user spend fund they haven't", function() {
     var vara;

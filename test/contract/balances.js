@@ -7,7 +7,7 @@ contract('Varanida - Balances', function(accounts) {
   const owner = accounts[0],
   random_guy = accounts[1],
   random_guy2 = accounts[2],
-  mintedAmount = 100000000;
+  mintedAmount = 1*Math.pow(10,18);
 
   it("should let everyone see every balances", function() {
     var vara;
