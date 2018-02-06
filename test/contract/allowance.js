@@ -52,7 +52,7 @@ contract('Varanida - Allowance', function(accounts) {
       }).then(function() {
         assert.fail('This won\'t happen.');
       }).catch(function(err) {
-        assert(err.message.search('AssertionError') >= 0);
+        assert(err.message.search('revert') >= 0);
       })
   });
 

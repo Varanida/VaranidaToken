@@ -20,7 +20,7 @@ contract('Varanida - Transfers', function(accounts) {
       }).then(function() {
         assert.fail('This won\'t happen.');
       }).catch(function(err) {
-        assert(err.message.search('invalid opcode') >= 0);
+        assert(err.message.search('revert') >= 0);
       });
   });
 

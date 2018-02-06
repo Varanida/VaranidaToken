@@ -1,21 +1,17 @@
 pragma solidity ^0.4.18;
 
-import './libraries/EIP20.sol';
-import './AirDrop.sol';
+import './libraries/StandardToken.sol';
+import './Mintable.sol';
 
-contract Varanida is EIP20, AirDrop {
+contract Varanida is StandardToken, Mintable {
 
-  // Standard EIP20 information
-  string  constant NAME = 'Varanida';
-  string  constant SYMBOL = 'VAD';
-  uint8   constant DECIMALS = 18;
-  uint256 constant UNIT = 10**uint256(DECIMALS);
+  string public constant name = 'Varanida';
+  uint8 public constant decimals = 18;
+  string public constant symbol = 'VAD';
 
-  function Varanida() EIP20(
-        0,
-        NAME,
-        DECIMALS,
-        SYMBOL
-  ) public {}
+  uint256 public constant UNIT = 10**uint256(decimals);
+  uint256 public constant DAILY_LIMIT = 100*UNIT;
+
+  function Varanida() Mintable(DAILY_LIMIT) public {}
 
 }
