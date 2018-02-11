@@ -6,6 +6,7 @@
   "scripts": {
     "build": "truffle compile",
     "start": "node index.js",
+    "deploy:dev": "truffle migrate --network dev",
     "test": "npm run test:contract && npm run test:api",
     "test:contract": "truffle test ./test/contract/*",
     "test:api": "mocha -R spec test/api"
@@ -17,6 +18,7 @@
     "express": "^4.14.1",
     "keythereum": "^0.4.2",
     "truffle-contract": "^1.1.10",
+    "truffle-hdwallet-provider": "0.0.3",
     "validator": "^7.0.0",
     "web3": "^0.18.2"
   },
