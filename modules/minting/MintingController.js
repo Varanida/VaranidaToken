@@ -1,7 +1,7 @@
 'use strict';
 
 const varanida = require('../../services/contract');
-const owner = '0x627306090abab3a6e1400e9345bc60c78a8bef57';
+const owner = '0x646608497f02b1485d914dfd5bdd885884c0093c';
 
 class MintingController {
 
