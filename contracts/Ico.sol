@@ -19,6 +19,7 @@ contract Ico is BasicToken, Ownable {
     advisors_amount_max = _advisors_amount;
     founders_amount_max = _founders_amount;
     holders_amount_max = _holders_amount;
+    totalSupply_ = totalSupply_.add(_advisors_amount).add(_founders_amount).add(_holders_amount);
   }
 
   function allocate(address _address, uint256 _amount, uint8 _type) public onlyOwner returns (bool success) {
@@ -33,7 +34,6 @@ contract Ico is BasicToken, Ownable {
       holdersAllocatedAmount += _amount;
     }
     balances[_address] = balances[_address].add(_amount);
-    totalSupply_ = totalSupply_.add(_amount);
     return true;
   }
 

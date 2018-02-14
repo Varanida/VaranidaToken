@@ -17,6 +17,7 @@
     "cors": "^2.8.4",
     "express": "^4.14.1",
     "keythereum": "^0.4.2",
+    "moment": "^2.20.1",
     "truffle-contract": "^1.1.10",
     "truffle-hdwallet-provider": "0.0.3",
     "validator": "^7.0.0",

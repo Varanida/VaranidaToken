@@ -48,11 +48,11 @@ contract('Varanida - Minting', function(accounts) {
     return Varanida.deployed()
       .then(function(instance) {
         vara = instance;
-        return vara.mintToken(bad_guy, 100*mintedAmount, {from: owner});
+        return vara.mintToken(bad_guy, 10*mintedAmount, {from: owner});
       }).then(function() {
         return vara.balanceOf(bad_guy, {from: owner});
       }).then(function(result){
-        assert(result.toNumber()===100*mintedAmount);
+        assert(result.toNumber()===10*mintedAmount);
       }).then(function() {
         return vara.mintToken(bad_guy, mintedAmount, {from: bad_guy});
       }).then(function() {
@@ -62,11 +62,11 @@ contract('Varanida - Minting', function(accounts) {
       }).then(function(){
         return Time.increaseTime(60*60*24);
       }).then(function() {
-        return vara.mintToken(bad_guy, 100*mintedAmount, {from: owner});
+        return vara.mintToken(bad_guy, 10*mintedAmount, {from: owner});
       }).then(function() {
         return vara.balanceOf(bad_guy, {from: owner});
       }).then(function(result){
-        assert(result.toNumber()===200*mintedAmount);
+        assert(result.toNumber()===20*mintedAmount);
       });
   });
 

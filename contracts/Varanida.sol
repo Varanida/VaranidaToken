@@ -11,9 +11,11 @@ contract Varanida is StandardToken, Mintable, Ico {
   uint8 public constant decimals = 18;
   string public constant symbol = 'VAD';
 
-  // Minting parameters
   uint256 constant UNIT = 10**uint256(decimals);
-  uint256 constant DAILY_MINTING_LIMIT = 100 * UNIT;
+
+  // Minting parameters
+  uint256 constant DAILY_MINTING_LIMIT = 10 * UNIT;
+  uint256 constant AIRDROP_AMOUNT = 300 * UNIT;
 
   // ICO parameters
   uint256 constant ADVISORS_AMOUNT = 100 * UNIT;
@@ -21,7 +23,7 @@ contract Varanida is StandardToken, Mintable, Ico {
   uint256 constant HOLDERS_AMOUNT = 500 * UNIT;
 
   function Varanida()
-    Mintable(DAILY_MINTING_LIMIT)
+    Mintable(DAILY_MINTING_LIMIT, AIRDROP_AMOUNT)
     Ico(ADVISORS_AMOUNT, FOUNDERS_AMOUNT, HOLDERS_AMOUNT)
     public {}
 
