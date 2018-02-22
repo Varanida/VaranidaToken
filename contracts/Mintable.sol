@@ -1,8 +1,8 @@
 pragma solidity ^0.4.18;
 
-import './libraries/BasicToken.sol';
-import './libraries/Ownable.sol';
-import './libraries/SafeMath.sol';
+import './libraries/ERC20/BasicToken.sol';
+import './libraries/ownership/Ownable.sol';
+import './libraries/math/SafeMath.sol';
 
 contract Mintable is BasicToken, Ownable {
   using SafeMath for uint256;

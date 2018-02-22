@@ -9,6 +9,7 @@ contract('Varanida - Ico', function(accounts) {
   random_guy1 = accounts[2],
   random_guy2 = accounts[3],
   random_guy3 = accounts[4],
+  random_guy4 = accounts[5],
   allocateAmount = Math.pow(10,18);
 
   it("should not let users issue ico tokens", function() {
@@ -62,18 +63,37 @@ contract('Varanida - Ico', function(accounts) {
       });
   });
 
+  it("should not let owner allocate more tokens than allowed to technicals", function() {
+    var vara;
+    return Varanida.deployed()
+      .then(function(instance) {
+        vara = instance;
+        return vara.allocate(random_guy3, 100*allocateAmount, 1, {from: owner});
+      }).then(function() {
+        return vara.balanceOf(random_guy3, {from: random_guy3});
+      }).then(function(result){
+        assert(result.toNumber()===100*allocateAmount);
+      }).then(function() {
+        return vara.allocate(random_guy3, allocateAmount, 1, {from: owner});
+      }).then(function() {
+        assert.fail('This won\'t happen.');
+      }).catch(function(err) {
+        assert(err.message.search('revert') >= 0);
+      });
+  });
+
   it("should not let owner allocate more tokens than allowed to users", function() {
     var vara;
     return Varanida.deployed()
       .then(function(instance) {
         vara = instance;
-        return vara.allocate(random_guy3, 500*allocateAmount, 2, {from: owner});
+        return vara.allocate(random_guy4, 400*allocateAmount, 2, {from: owner});
       }).then(function() {
-        return vara.balanceOf(random_guy3, {from: random_guy3});
+        return vara.balanceOf(random_guy4, {from: random_guy4});
       }).then(function(result){
-        assert(result.toNumber()===500*allocateAmount);
+        assert(result.toNumber()===400*allocateAmount);
       }).then(function() {
-        return vara.allocate(random_guy3, allocateAmount, 2, {from: owner});
+        return vara.allocate(random_guy4, allocateAmount, 2, {from: owner});
       }).then(function() {
         assert.fail('This won\'t happen.');
       }).catch(function(err) {
