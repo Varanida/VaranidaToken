@@ -2,9 +2,9 @@ pragma solidity ^0.4.18;
 
 import './Ico.sol';
 import './Mintable.sol';
-import './libraries/ERC20/StandardToken.sol';
+import './libraries/ERC20/PausableToken.sol';
 
-contract Varanida is StandardToken, Mintable, Ico {
+contract Varanida is PausableToken, Mintable, Ico {
 
   // Token basic informations
   string public constant name = 'Varanida';
