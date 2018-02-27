@@ -1,10 +1,10 @@
 pragma solidity ^0.4.18;
 
-import './Ico.sol';
 import './MintableToken.sol';
+import './Vesting.sol';
 import './libraries/ERC20/PausableToken.sol';
 
-contract Varanida is PausableToken, MintableToken, Ico {
+contract Varanida is PausableToken, MintableToken, Vesting {
 
   // Token basic informations
   string public constant name = 'Varanida';
@@ -17,15 +17,24 @@ contract Varanida is PausableToken, MintableToken, Ico {
   uint256 constant DAILY_MINTING_LIMIT = 10 * UNIT;
   uint256 constant AIRDROP_AMOUNT = 300 * UNIT;
 
-  // ICO parameters
+  // Vesting parameters
   uint256 constant ADVISORS_AMOUNT = 100 * UNIT;
+  uint256 constant ADVISORS_CLIFF = 365 days;
+  uint256 constant ADVISORS_DURATION = 365 days;
   uint256 constant FOUNDERS_AMOUNT = 100 * UNIT;
+  uint256 constant FOUNDERS_CLIFF = 365 days;
+  uint256 constant FOUNDERS_DURATION = 365 days;
   uint256 constant TECHS_AMOUNT = 100 * UNIT;
+  uint256 constant TECHS_CLIFF = 365 days;
+  uint256 constant TECHS_DURATION = 365 days;
   uint256 constant HOLDERS_AMOUNT = 400 * UNIT;
 
   function Varanida()
     MintableToken(DAILY_MINTING_LIMIT, AIRDROP_AMOUNT)
-    Ico(ADVISORS_AMOUNT, FOUNDERS_AMOUNT, TECHS_AMOUNT, HOLDERS_AMOUNT)
+    Vesting(ADVISORS_AMOUNT, ADVISORS_CLIFF, ADVISORS_DURATION,
+            FOUNDERS_AMOUNT, FOUNDERS_CLIFF, FOUNDERS_AMOUNT,
+            TECHS_AMOUNT, TECHS_CLIFF, TECHS_DURATION,
+            HOLDERS_AMOUNT)
     public {}
 
 }
