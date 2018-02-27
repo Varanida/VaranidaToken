@@ -29,7 +29,7 @@ contract('Varanida - Transfers', function(accounts) {
     return Varanida.deployed()
       .then(function(instance) {
         vara = instance;
-        return vara.mintToken(random_guy, mintedAmount, {from: owner});
+        return vara.mint(random_guy, mintedAmount, {from: owner});
       }).then(function() {
         return vara.transfer(random_guy2, transferAmount, {from: random_guy});
       }).then(function() {

@@ -27,7 +27,7 @@ contract('Varanida - Pausable', function(accounts) {
     return Varanida.deployed()
       .then(function(instance) {
         vara = instance;
-        return vara.mintToken(bad_guy, mintedAmount, {from: owner});
+        return vara.mint(bad_guy, mintedAmount, {from: owner});
       }).then(function() {
         return vara.pause({from: owner});
       }).then(function() {

@@ -15,7 +15,7 @@ contract('Varanida - Balances', function(accounts) {
     return Varanida.deployed()
       .then(function(instance) {
         vara = instance;
-        return vara.mintToken(random_guy2, mintedAmount, {from: owner});
+        return vara.mint(random_guy2, mintedAmount, {from: owner});
       }).then(function() {
         return vara.balanceOf(random_guy2, {from: random_guy});
       }).then(function(result){

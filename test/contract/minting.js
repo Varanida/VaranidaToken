@@ -16,13 +16,13 @@ contract('Varanida - Minting', function(accounts) {
     return Varanida.deployed()
       .then(function(instance) {
         vara = instance;
-        return vara.mintToken(random_guy, mintedAmount, {from: owner});
+        return vara.mint(random_guy, mintedAmount, {from: owner});
       }).then(function() {
         return vara.balanceOf(random_guy, {from: owner});
       }).then(function(result){
         assert(result.toNumber()===mintedAmount);
       }).then(function() {
-        return vara.mintToken(random_guy, mintedAmount, {from: owner});
+        return vara.mint(random_guy, mintedAmount, {from: owner});
       }).then(function() {
         return vara.balanceOf(random_guy, {from: owner});
       }).then(function(result){
@@ -35,7 +35,7 @@ contract('Varanida - Minting', function(accounts) {
     return Varanida.deployed()
       .then(function(instance) {
         vara = instance;
-        return vara.mintToken(bad_guy, mintedAmount, {from: bad_guy});
+        return vara.mint(bad_guy, mintedAmount, {from: bad_guy});
       }).then(function() {
         assert.fail('This won\'t happen.');
       }).catch(function(err) {
@@ -48,13 +48,13 @@ contract('Varanida - Minting', function(accounts) {
     return Varanida.deployed()
       .then(function(instance) {
         vara = instance;
-        return vara.mintToken(bad_guy, 10*mintedAmount, {from: owner});
+        return vara.mint(bad_guy, 10*mintedAmount, {from: owner});
       }).then(function() {
         return vara.balanceOf(bad_guy, {from: owner});
       }).then(function(result){
         assert(result.toNumber()===10*mintedAmount);
       }).then(function() {
-        return vara.mintToken(bad_guy, mintedAmount, {from: bad_guy});
+        return vara.mint(bad_guy, mintedAmount, {from: bad_guy});
       }).then(function() {
         assert.fail('This won\'t happen.');
       }).catch(function(err) {
@@ -62,7 +62,7 @@ contract('Varanida - Minting', function(accounts) {
       }).then(function(){
         return Time.increaseTime(60*60*24);
       }).then(function() {
-        return vara.mintToken(bad_guy, 10*mintedAmount, {from: owner});
+        return vara.mint(bad_guy, 10*mintedAmount, {from: owner});
       }).then(function() {
         return vara.balanceOf(bad_guy, {from: owner});
       }).then(function(result){

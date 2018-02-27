@@ -1,10 +1,10 @@
 pragma solidity ^0.4.18;
 
 import './Ico.sol';
-import './Mintable.sol';
+import './MintableToken.sol';
 import './libraries/ERC20/PausableToken.sol';
 
-contract Varanida is PausableToken, Mintable, Ico {
+contract Varanida is PausableToken, MintableToken, Ico {
 
   // Token basic informations
   string public constant name = 'Varanida';
@@ -24,7 +24,7 @@ contract Varanida is PausableToken, Mintable, Ico {
   uint256 constant HOLDERS_AMOUNT = 400 * UNIT;
 
   function Varanida()
-    Mintable(DAILY_MINTING_LIMIT, AIRDROP_AMOUNT)
+    MintableToken(DAILY_MINTING_LIMIT, AIRDROP_AMOUNT)
     Ico(ADVISORS_AMOUNT, FOUNDERS_AMOUNT, TECHS_AMOUNT, HOLDERS_AMOUNT)
     public {}
 

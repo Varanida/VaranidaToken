@@ -15,7 +15,7 @@ contract('Varanida - Allowance', function(accounts) {
     return Varanida.deployed()
       .then(function(instance) {
         vara = instance;
-        return vara.mintToken(random_guy, mintedAmount, {from: owner});
+        return vara.mint(random_guy, mintedAmount, {from: owner});
       }).then(function() {
         return vara.approve(random_guy2, mintedAmount/2, {from: random_guy});
       }).then(function() {
@@ -36,9 +36,9 @@ contract('Varanida - Allowance', function(accounts) {
     return Varanida.deployed()
       .then(function(instance) {
         vara = instance;
-        return vara.mintToken(random_guy, mintedAmount, {from: owner});
+        return vara.mint(random_guy, mintedAmount, {from: owner});
       }).then(function() {
-        return vara.mintToken(random_guy2, mintedAmount, {from: owner});
+        return vara.mint(random_guy2, mintedAmount, {from: owner});
       }).then(function() {
         return vara.approve(bad_guy, mintedAmount/2, {from: random_guy});
       }).then(function() {
