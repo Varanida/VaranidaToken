@@ -101,8 +101,8 @@ contract Vesting is BasicToken, Ownable {
     if (now < cliff || _amount > available_to_distribute) {
       return false;
     }
-    balances[_to] = balances[_to].add(_amount);
     grant_state.totalDistributed = grant_state.totalDistributed.add(_amount);
+    balances[_to] = balances[_to].add(_amount);
     Transfer(address(0), _to, _amount);
     return true;
   }

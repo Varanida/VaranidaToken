@@ -32,7 +32,7 @@ contract Varanida is PausableToken, MintableToken, Vesting {
   function Varanida()
     MintableToken(DAILY_MINTING_LIMIT, AIRDROP_AMOUNT)
     Vesting(ADVISORS_AMOUNT, ADVISORS_CLIFF, ADVISORS_DURATION,
-            FOUNDERS_AMOUNT, FOUNDERS_CLIFF, FOUNDERS_AMOUNT,
+            FOUNDERS_AMOUNT, FOUNDERS_CLIFF, FOUNDERS_DURATION,
             TECHS_AMOUNT, TECHS_CLIFF, TECHS_DURATION,
             HOLDERS_AMOUNT)
     public {}
