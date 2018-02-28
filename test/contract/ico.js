@@ -68,13 +68,13 @@ contract('Varanida - Ico', function(accounts) {
     return Varanida.deployed()
       .then(function(instance) {
         vara = instance;
-        return vara.allocate(random_guy3, 100*allocateAmount, 1, {from: owner});
+        return vara.allocate(random_guy3, 100*allocateAmount, 2, {from: owner});
       }).then(function() {
         return vara.balanceOf(random_guy3, {from: random_guy3});
       }).then(function(result){
         assert(result.toNumber()===100*allocateAmount);
       }).then(function() {
-        return vara.allocate(random_guy3, allocateAmount, 1, {from: owner});
+        return vara.allocate(random_guy3, allocateAmount, 2, {from: owner});
       }).then(function() {
         assert.fail('This won\'t happen.');
       }).catch(function(err) {
