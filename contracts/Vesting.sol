@@ -36,19 +36,18 @@ contract Vesting is BasicToken, Ownable {
                    uint256 _technicals_amount, uint256 _technicals_cliff, uint256 _technicals_duration,
                    uint256 _holders_amount) public {
     uint256 ico_supply = _advisors_amount + _founders_amount + _technicals_amount + _holders_amount;
-    uint256 today = now / 1 days;
     totalSupply_ = totalSupply_.add(ico_supply);
 
     advisors_amount_to_distribute = _advisors_amount;
-    advisors_cliff = today + _advisors_cliff;
+    advisors_cliff = now + _advisors_cliff;
     advisors_duration = _advisors_duration;
 
     founders_amount_to_distribute = _founders_amount;
-    founders_cliff = today + _founders_cliff;
+    founders_cliff = now + _founders_cliff;
     founders_duration = _founders_duration;
 
     technicals_amount_to_distribute = _technicals_amount;
-    technicals_cliff = today + _technicals_cliff;
+    technicals_cliff = now + _technicals_cliff;
     technicals_duration = _technicals_duration;
 
     holders_amount_to_distribute = _holders_amount;
@@ -97,10 +96,14 @@ contract Vesting is BasicToken, Ownable {
     } else { // holders
       return false;
     }
-    available_to_distribute = grant_state.totalAmount.mul(now.sub(cliff)).div(duration).sub(grant_state.totalDistributed);
-    if (now < cliff || _amount > available_to_distribute) {
-      return false;
+
+    available_to_distribute = grant_state.totalAmount.mul(now.sub(cliff)).div(duration);
+    if(available_to_distribute > grant_state.totalAmount) {
+      available_to_distribute = grant_state.totalAmount;
     }
+    available_to_distribute = available_to_distribute.sub(grant_state.totalDistributed);
+
+    require(now > cliff && _amount <= available_to_distribute);
     grant_state.totalDistributed = grant_state.totalDistributed.add(_amount);
     balances[_to] = balances[_to].add(_amount);
     Transfer(address(0), _to, _amount);
