@@ -77,34 +77,35 @@ contract Vesting is BasicToken, Ownable {
   }
 
   function claimTokens(address _to, uint256 _amount, uint8 _type) public returns (bool success) {
+    uint256 available_to_distribute = 0;
     uint256 cliff;
     uint256 duration;
-    uint256 available_to_distribute;
-    grantState storage grant_state;
+    grantState storage grant;
+
     if (_type == 0) { // advisor
       cliff = advisors_cliff;
       duration = advisors_duration;
-      grant_state = advisors_grants[_to];
+      grant = advisors_grants[_to];
     } else if (_type == 1) { // founder
       cliff = founders_cliff;
       duration = founders_duration;
-      grant_state = founders_grants[_to];
+      grant = founders_grants[_to];
     } else if (_type == 2) { // technical
       cliff = technicals_cliff;
       duration = technicals_duration;
-      grant_state = technicals_grants[_to];
+      grant = technicals_grants[_to];
     } else { // holders
-      return false;
+      revert();
     }
 
-    available_to_distribute = grant_state.totalAmount.mul(now.sub(cliff)).div(duration);
-    if(available_to_distribute > grant_state.totalAmount) {
-      available_to_distribute = grant_state.totalAmount;
+    if (now >= cliff.add(duration)) {
+      available_to_distribute = grant.totalAmount.sub(grant.totalDistributed);
+    } else if (now > cliff) {
+      available_to_distribute = grant.totalAmount.mul(now.sub(cliff)).div(duration).sub(grant.totalDistributed);
     }
-    available_to_distribute = available_to_distribute.sub(grant_state.totalDistributed);
 
-    require(now > cliff && _amount <= available_to_distribute);
-    grant_state.totalDistributed = grant_state.totalDistributed.add(_amount);
+    require(_amount <= available_to_distribute);
+    grant.totalDistributed = grant.totalDistributed.add(_amount);
     balances[_to] = balances[_to].add(_amount);
     Transfer(address(0), _to, _amount);
     return true;
