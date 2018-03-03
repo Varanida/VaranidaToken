@@ -6,9 +6,9 @@
   "scripts": {
     "build": "truffle compile",
     "start": "node index.js",
+    "costs": "truffle test ./costs/*",
     "deploy:dev": "truffle migrate --network dev",
-    "test": "npm run test:contract && npm run test:api",
-    "test:contract": "truffle test ./test/contract/*",
+    "test": "truffle test ./test/contract/*",
     "test:api": "mocha -R spec test/api"
   },
   "license": "GPL-v3",
