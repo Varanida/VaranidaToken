@@ -44,4 +44,11 @@ contract MintableToken is StandardToken, Ownable {
     return false;
   }
 
+  function mintBatch(address[] _to, uint256[] _amount) onlyOwner canMint public {
+    require(_to.length == _amount.length);
+    for(uint i = 0; i < _to.length; i++) {
+      require(mint(_to[i], _amount[i]));
+    }
+  }
+
 }

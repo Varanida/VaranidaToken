@@ -3,6 +3,13 @@
 var Varanida = artifacts.require("./Varanida.sol");
 const Time = require("../test/helpers/time.js");
 
+function* naturalNumberGenerator(maxVal) {
+  let currVal = 0;
+  while(currVal < maxVal) {
+    yield currVal++;
+  }
+}
+
 contract('Varanida - Mint()\n', function(accounts) {
 
   const owner = accounts[0],
@@ -50,6 +57,17 @@ contract('Varanida - Mint()\n', function(accounts) {
     }).then(function(result) {
       var gas = Number(result);
       console.log(" (mint) gas estimation = " + gas + " units"); // 54958
+      console.log(" (mint) gas cost estimation = " + Varanida.web3.fromWei((gas * gasPrice), 'ether') + " ether\n");
+    });
+  });
+
+  it("mintBatch 1 VAD for 50 users", function() {
+    return Varanida.deployed().then(function(instance) {
+      const indexes = [...naturalNumberGenerator(50)];
+      return instance.mintBatch.estimateGas(indexes.map((x)=>'0x'+x), indexes.map((x)=>amount));
+    }).then(function(result) {
+      var gas = Number(result);
+      console.log(" (mint) gas estimation = " + gas + " units"); // 3889597 or 77791 for one user
       console.log(" (mint) gas cost estimation = " + Varanida.web3.fromWei((gas * gasPrice), 'ether') + " ether\n");
     });
   });
