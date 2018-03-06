@@ -82,7 +82,7 @@ contract('Varanida - Mint()\n', function(accounts) {
       return varanida.mintBatch.estimateGas(indexes.map((x)=>'0x'+x), indexes.map((x)=>amount));
     }).then(function(result) {
       var gas = Number(result);
-      console.log(" (mint) gas estimation = " + gas + " units"); // 3889597 or 77791 for one user
+      console.log(" (mint) gas estimation = " + gas + " units"); // 1128597 or 22572 for one user
       console.log(" (mint) gas cost estimation = " + Varanida.web3.fromWei((gas * gasPrice), 'ether') + " ether");
     });
   });
@@ -98,7 +98,7 @@ contract('Varanida - Mint()\n', function(accounts) {
       return varanida.mintBatch.estimateGas(indexes.map((x)=>'0x'+x), indexes.map((x)=>amount));
     }).then(function(result) {
       var gas = Number(result);
-      console.log(" (mint) gas estimation = " + gas + " units"); // 3889597 or 77791 for one user
+      console.log(" (mint) gas estimation = " + gas + " units"); // 1639597 or 32792 for one user
       console.log(" (mint) gas cost estimation = " + Varanida.web3.fromWei((gas * gasPrice), 'ether') + " ether");
     });
   });
