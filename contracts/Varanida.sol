@@ -19,22 +19,33 @@ contract Varanida is PausableToken, MintableToken, Vesting {
 
   // Vesting parameters
   uint256 constant ADVISORS_AMOUNT = 100 * UNIT;
-  uint256 constant ADVISORS_CLIFF = 365 days;
-  uint256 constant ADVISORS_DURATION = 365 days;
+  uint256 constant ADVISORS_CLIFF = 0 days;
+  uint256 constant ADVISORS_DURATION = 0 days;
+  uint256 constant ADVISORS_BONUS_PERCENTAGE = 30;
+  uint256 constant ADVISORS_BONUS_TARGET = 182 days;
   uint256 constant FOUNDERS_AMOUNT = 100 * UNIT;
-  uint256 constant FOUNDERS_CLIFF = 365 days;
-  uint256 constant FOUNDERS_DURATION = 365 days;
+  uint256 constant FOUNDERS_CLIFF = 1 years;
+  uint256 constant FOUNDERS_DURATION = 1 years;
+  uint256 constant FOUNDERS_BONUS_PERCENTAGE = 0;
+  uint256 constant FOUNDERS_BONUS_TARGET = 0 days;
   uint256 constant TECHS_AMOUNT = 100 * UNIT;
-  uint256 constant TECHS_CLIFF = 365 days;
-  uint256 constant TECHS_DURATION = 365 days;
+  uint256 constant TECHS_CLIFF = 182 days;
+  uint256 constant TECHS_DURATION = 182 days;
+  uint256 constant TECHS_BONUS_PERCENTAGE = 0;
+  uint256 constant TECHS_BONUS_TARGET = 0 days;
   uint256 constant HOLDERS_AMOUNT = 400 * UNIT;
 
   function Varanida()
     MintableToken(DAILY_MINTING_LIMIT, AIRDROP_AMOUNT)
     Vesting(ADVISORS_AMOUNT, ADVISORS_CLIFF, ADVISORS_DURATION,
+            ADVISORS_BONUS_PERCENTAGE, ADVISORS_BONUS_TARGET,
             FOUNDERS_AMOUNT, FOUNDERS_CLIFF, FOUNDERS_DURATION,
+            FOUNDERS_BONUS_PERCENTAGE, FOUNDERS_BONUS_TARGET,
             TECHS_AMOUNT, TECHS_CLIFF, TECHS_DURATION,
+            TECHS_BONUS_PERCENTAGE, TECHS_BONUS_TARGET,
             HOLDERS_AMOUNT)
-    public {}
+    public {
+      totalSupply_ = AIRDROP_AMOUNT + ADVISORS_AMOUNT + FOUNDERS_AMOUNT + TECHS_AMOUNT + HOLDERS_AMOUNT;
+    }
 
 }

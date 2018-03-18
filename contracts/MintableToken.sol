@@ -1,9 +1,9 @@
 pragma solidity ^0.4.18;
 
-import "./libraries/ERC20/StandardToken.sol";
+import "./libraries/ERC20/BasicToken.sol";
 import "./libraries/ownership/Ownable.sol";
 
-contract MintableToken is StandardToken, Ownable {
+contract MintableToken is BasicToken, Ownable {
 
   event Mint(address indexed to, uint256 amount);
 
@@ -22,7 +22,6 @@ contract MintableToken is StandardToken, Ownable {
   }
 
   function MintableToken(uint256 _user_limit, uint256 _quantity_to_drop) public {
-    totalSupply_ = totalSupply_.add(_quantity_to_drop);
     dailyLimit = _user_limit;
     quantityToDrop = _quantity_to_drop;
   }
