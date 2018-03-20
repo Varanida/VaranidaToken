@@ -102,19 +102,19 @@ contract Vesting is BasicToken, Ownable {
     if (_type == 0) { // advisor
       cliff = advisors_cliff;
       duration = advisors_duration;
-      grant = advisors_grants[_to];
+      grant = advisors_grants[msg.sender];
       bonus_percentage = advisors_bonus_percentage;
       bonus_target = advisors_bonus_target;
     } else if (_type == 1) { // founder
       cliff = founders_cliff;
       duration = founders_duration;
-      grant = founders_grants[_to];
+      grant = founders_grants[msg.sender];
       bonus_percentage = founders_bonus_percentage;
       bonus_target = founders_bonus_target;
     } else if (_type == 2) { // technical
       cliff = technicals_cliff;
       duration = technicals_duration;
-      grant = technicals_grants[_to];
+      grant = technicals_grants[msg.sender];
       bonus_percentage = technicals_bonus_percentage;
       bonus_target = technicals_bonus_target;
     } else { // holders
