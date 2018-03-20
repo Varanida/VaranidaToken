@@ -8,6 +8,7 @@ contract('Varanida - Balances', function(accounts) {
   random_guy = accounts[1],
   random_guy2 = accounts[2],
   tokenIssued = 1000*Math.pow(10,18),
+  tokenIssuedAsBonuses = 30*Math.pow(10,18),
   mintedAmount = 1*Math.pow(10,18);
 
   it("should let everyone see every balances", function() {
@@ -30,7 +31,7 @@ contract('Varanida - Balances', function(accounts) {
         vara = instance;
         return vara.totalSupply({from: owner});
       }).then(function(result){
-        assert(result.toNumber()===tokenIssued);
+        assert(result.toNumber()===(tokenIssued + tokenIssuedAsBonuses));
       });
   });
 

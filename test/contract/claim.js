@@ -19,6 +19,12 @@ contract('Varanida - claim tokens', function(accounts) {
         vara = instance;
         return vara.allocate(advisor, 100*allocateAmount, 0, {from: owner});
       }).then(function(){
+        return vara.claimTokens(advisor, 101*allocateAmount, 0, {from: advisor});
+      }).then(function() {
+        assert.fail('This won\'t happen.');
+      }).catch(function(err) {
+        assert(err.message.search('revert') >= 0);
+      }).then(function(){
         return vara.claimTokens(advisor, 100*allocateAmount, 0, {from: advisor});
       }).then(function() {
         return vara.balanceOf(advisor, {from: advisor});

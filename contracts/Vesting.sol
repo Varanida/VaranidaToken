@@ -8,6 +8,7 @@ contract Vesting is BasicToken, Ownable {
   using SafeMath for uint256;
 
   event Allocate(address indexed to, uint256 amount);
+  event Burn(address indexed from, uint256 amount);
 
   struct grantState {
     uint256 totalAmount;
@@ -128,11 +129,12 @@ contract Vesting is BasicToken, Ownable {
     }
 
     // add bonus if you are eligible to it or burn it
-    if (bonus_percentage > 0 && grant.totalAmount == grant.totalDistributed) {
+    if (bonus_percentage > 0 && grant.totalDistributed == 0) {
       if (now >= bonus_target) {
-        available_to_distribute = available_to_distribute.add(grant.totalAmount.mul(100).div(bonus_percentage));
+        available_to_distribute = available_to_distribute.add(grant.totalAmount.mul(bonus_percentage).div(100));
       } else {
-        totalSupply_ = totalSupply_.sub(grant.totalAmount.mul(100).div(bonus_percentage));
+        totalSupply_ = totalSupply_.sub(grant.totalAmount.mul(bonus_percentage).div(100));
+        Burn(_to, grant.totalAmount.mul(100).div(bonus_percentage));
       }
     }
 

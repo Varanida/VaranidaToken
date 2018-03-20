@@ -45,7 +45,15 @@ contract Varanida is PausableToken, MintableToken, Vesting {
             TECHS_BONUS_PERCENTAGE, TECHS_BONUS_TARGET,
             HOLDERS_AMOUNT)
     public {
-      totalSupply_ = AIRDROP_AMOUNT + ADVISORS_AMOUNT + FOUNDERS_AMOUNT + TECHS_AMOUNT + HOLDERS_AMOUNT;
+      totalSupply_ =
+        AIRDROP_AMOUNT
+        + ADVISORS_AMOUNT
+        + ADVISORS_AMOUNT.mul(ADVISORS_BONUS_PERCENTAGE).div(100)
+        + FOUNDERS_AMOUNT
+        + FOUNDERS_AMOUNT.mul(FOUNDERS_BONUS_PERCENTAGE).div(100)
+        + TECHS_AMOUNT
+        + TECHS_AMOUNT.mul(TECHS_BONUS_PERCENTAGE).div(100)
+        + HOLDERS_AMOUNT;
     }
 
 }
