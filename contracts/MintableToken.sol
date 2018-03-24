@@ -1,7 +1,7 @@
 pragma solidity ^0.4.18;
 
-import "./libraries/ERC20/BasicToken.sol";
-import "./libraries/ownership/Ownable.sol";
+import 'zeppelin-solidity/contracts/token/ERC20/BasicToken.sol';
+import 'zeppelin-solidity/contracts/ownership/Ownable.sol';
 
 contract MintableToken is BasicToken, Ownable {
 

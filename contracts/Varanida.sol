@@ -2,7 +2,7 @@ pragma solidity ^0.4.18;
 
 import './MintableToken.sol';
 import './Vesting.sol';
-import './libraries/ERC20/PausableToken.sol';
+import 'zeppelin-solidity/contracts/token/ERC20/PausableToken.sol';
 
 contract Varanida is PausableToken, MintableToken, Vesting {
 

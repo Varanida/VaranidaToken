@@ -1,8 +1,8 @@
 pragma solidity ^0.4.18;
 
-import './libraries/ERC20/BasicToken.sol';
-import './libraries/ownership/Ownable.sol';
-import './libraries/math/SafeMath.sol';
+import 'zeppelin-solidity/contracts/token/ERC20/BasicToken.sol';
+import 'zeppelin-solidity/contracts/ownership/Ownable.sol';
+import 'zeppelin-solidity/contracts/math/SafeMath.sol';
 
 contract Vesting is BasicToken, Ownable {
   using SafeMath for uint256;
