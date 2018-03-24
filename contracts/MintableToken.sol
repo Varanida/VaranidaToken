@@ -45,7 +45,7 @@ contract MintableToken is BasicToken, Ownable {
 
   function mintBatch(address[] _to, uint256[] _amount) onlyOwner canMint public {
     require(_to.length == _amount.length);
-    for(uint i = 0; i < _to.length; i++) {
+    for(uint256 i = 0; i < _to.length; i++) {
       require(mint(_to[i], _amount[i]));
     }
   }
