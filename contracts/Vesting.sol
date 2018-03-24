@@ -10,6 +10,8 @@ contract Vesting is BasicToken, Ownable {
   event Allocate(address indexed to, uint256 amount);
   event Burn(address indexed from, uint256 amount);
 
+  enum UserType { DEFAULT, ADVISOR, FOUNDER, TECHNICAL }
+
   struct grantState {
     uint256 totalAmount;
     uint256 totalDistributed;
@@ -68,16 +70,16 @@ contract Vesting is BasicToken, Ownable {
     holders_amount_to_distribute = _holders_amount;
   }
 
-  function allocate(address _to, uint256 _amount, uint8 _type) public onlyOwner returns (bool success) {
-    if (_type == 0) { // advisor
+  function allocate(address _to, uint256 _amount, UserType _type) public onlyOwner returns (bool success) {
+    if (_type == UserType.ADVISOR) {
       require(_amount <= advisors_amount_to_distribute);
       advisors_amount_to_distribute = advisors_amount_to_distribute.sub(_amount);
       advisors_grants[_to] = grantState({totalAmount: _amount, totalDistributed: 0});
-    } else if (_type == 1) { // founder
+    } else if (_type == UserType.FOUNDER) {
       require(_amount <= founders_amount_to_distribute);
       founders_amount_to_distribute = founders_amount_to_distribute.sub(_amount);
       founders_grants[_to] = grantState({totalAmount: _amount, totalDistributed: 0});
-    } else if (_type == 2) { // technical
+    } else if (_type == UserType.TECHNICAL) {
       require(_amount <= technicals_amount_to_distribute);
       technicals_amount_to_distribute = technicals_amount_to_distribute.sub(_amount);
       technicals_grants[_to] = grantState({totalAmount: _amount, totalDistributed: 0});
@@ -91,7 +93,7 @@ contract Vesting is BasicToken, Ownable {
     return true;
   }
 
-  function claimTokens(address _to, uint256 _amount, uint8 _type) public returns (bool success) {
+  function claimTokens(address _to, uint256 _amount, UserType _type) public returns (bool success) {
     uint256 available_to_distribute = 0;
     uint256 cliff;
     uint256 duration;
@@ -99,25 +101,25 @@ contract Vesting is BasicToken, Ownable {
     uint256 bonus_target;
     grantState storage grant;
 
-    if (_type == 0) { // advisor
+    if (_type == UserType.ADVISOR) {
       cliff = advisors_cliff;
       duration = advisors_duration;
       grant = advisors_grants[msg.sender];
       bonus_percentage = advisors_bonus_percentage;
       bonus_target = advisors_bonus_target;
-    } else if (_type == 1) { // founder
+    } else if (_type == UserType.FOUNDER) {
       cliff = founders_cliff;
       duration = founders_duration;
       grant = founders_grants[msg.sender];
       bonus_percentage = founders_bonus_percentage;
       bonus_target = founders_bonus_target;
-    } else if (_type == 2) { // technical
+    } else if (_type == UserType.TECHNICAL) {
       cliff = technicals_cliff;
       duration = technicals_duration;
       grant = technicals_grants[msg.sender];
       bonus_percentage = technicals_bonus_percentage;
       bonus_target = technicals_bonus_target;
-    } else { // holders
+    } else { // default
       revert();
     }
 
