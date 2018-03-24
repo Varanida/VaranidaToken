@@ -1,4 +1,4 @@
-// var HDWalletProvider = require('truffle-hdwallet-provider');
+var HDWalletProvider = require('truffle-hdwallet-provider');
 
 var mnemonic = 'void artefact fly lobster run cradle benefit portion crumble expose salute image';
 
