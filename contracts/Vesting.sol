@@ -114,6 +114,7 @@ contract Vesting is BasicToken, Ownable {
       } else {
         totalSupply_ = totalSupply_.sub(grant.totalAmount.mul(bonus_percentage).div(100));
         Burn(_to, grant.totalAmount.mul(100).div(bonus_percentage));
+        Transfer(_to, address(0), _amount);
       }
     }
 
