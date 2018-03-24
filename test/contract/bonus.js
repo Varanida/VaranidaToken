@@ -15,9 +15,9 @@ contract('Varanida - claim tokens with bonus', function(accounts) {
     return Varanida.new() // Redeploy Varanida contract
       .then(function(instance) {
         vara = instance;
-        return vara.allocate(advisor, 100*allocateAmount, 1, {from: owner});
+        return vara.allocate(advisor, 40000000*allocateAmount, 1, {from: owner});
       }).then(function(){
-        return vara.claimTokens(advisor, 130*allocateAmount, 1, {from: advisor});
+        return vara.claimTokens(advisor, 52000000*allocateAmount, 1, {from: advisor});
       }).then(function() {
         assert.fail('This won\'t happen.');
       }).catch(function(err) {
@@ -25,17 +25,17 @@ contract('Varanida - claim tokens with bonus', function(accounts) {
       }).then(function(){
         return Time.increaseTime(0.5*year);
       }).then(function(){
-        return vara.claimTokens(advisor, 131*allocateAmount, 1, {from: advisor});
+        return vara.claimTokens(advisor, 52000001*allocateAmount, 1, {from: advisor});
       }).then(function() {
         assert.fail('This won\'t happen.');
       }).catch(function(err) {
         assert(err.message.search('revert') >= 0);
       }).then(function(){
-        return vara.claimTokens(advisor, 130*allocateAmount, 1, {from: advisor});
+        return vara.claimTokens(advisor, 52000000*allocateAmount, 1, {from: advisor});
       }).then(function() {
         return vara.balanceOf(advisor, {from: advisor});
       }).then(function(result){
-        assert(result.toNumber()===130*allocateAmount);
+        assert(result.toNumber()===52000000*allocateAmount);
       });
   });
 
@@ -44,31 +44,31 @@ contract('Varanida - claim tokens with bonus', function(accounts) {
     return Varanida.new() // Redeploy Varanida contract
       .then(function(instance) {
         vara = instance;
-        return vara.allocate(advisor, 100*allocateAmount, 1, {from: owner});
+        return vara.allocate(advisor, 40000000*allocateAmount, 1, {from: owner});
       }).then(function(){
-        return vara.claimTokens(advisor, 1*allocateAmount, 1, {from: advisor});
+        return vara.claimTokens(advisor, allocateAmount, 1, {from: advisor});
       }).then(function() {
         return vara.balanceOf(advisor, {from: advisor});
       }).then(function(result){
-        assert(result.toNumber()===1*allocateAmount);
+        assert(result.toNumber()===allocateAmount);
       }).then(function(){
         return Time.increaseTime(0.5*year);
       }).then(function(){
-        return vara.claimTokens(advisor, 129*allocateAmount, 1, {from: advisor});
+        return vara.claimTokens(advisor, 51999999*allocateAmount, 1, {from: advisor});
       }).then(function() {
         assert.fail('This won\'t happen.');
       }).catch(function(err) {
         assert(err.message.search('revert') >= 0);
       }).then(function(){
-        return vara.claimTokens(advisor, 99*allocateAmount, 1, {from: advisor});
+        return vara.claimTokens(advisor, 39999999*allocateAmount, 1, {from: advisor});
       }).then(function() {
         return vara.balanceOf(advisor, {from: advisor});
       }).then(function(result){
-        assert(result.toNumber()===100*allocateAmount);
+        assert(result.toNumber()===40000000*allocateAmount);
       }).then(function() {
         return vara.totalSupply({from: advisor});
       }).then(function(result){
-        assert(result.toNumber()===1000*allocateAmount);
+        assert(result.toNumber()===890000000*allocateAmount);
       });
   });
 
