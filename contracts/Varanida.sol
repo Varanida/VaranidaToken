@@ -27,6 +27,7 @@ contract Varanida is PausableToken, MintableToken, Vesting {
   uint256 constant TECHS_AMOUNT = 20000000 * UNIT;
   uint256 constant TECHS_CLIFF = 182 days;
   uint256 constant TECHS_DURATION = 182 days;
+  uint256 constant RESERVE_AMOUNT = 110000000 * UNIT;
   uint256 constant HOLDERS_AMOUNT = 670000000 * UNIT;
 
   function Varanida()
@@ -34,14 +35,14 @@ contract Varanida is PausableToken, MintableToken, Vesting {
     Vesting(ADVISORS_AMOUNT, ADVISORS_BONUS_PERCENTAGE, ADVISORS_BONUS_TARGET,
             FOUNDERS_AMOUNT, FOUNDERS_CLIFF, FOUNDERS_DURATION,
             TECHS_AMOUNT, TECHS_CLIFF, TECHS_DURATION,
-            HOLDERS_AMOUNT)
+            RESERVE_AMOUNT, HOLDERS_AMOUNT)
     public {
       totalSupply_ =
         AIRDROP_AMOUNT
         + ADVISORS_AMOUNT
-        + ADVISORS_AMOUNT.mul(ADVISORS_BONUS_PERCENTAGE).div(100)
         + FOUNDERS_AMOUNT
         + TECHS_AMOUNT
+        + RESERVE_AMOUNT
         + HOLDERS_AMOUNT;
     }
 

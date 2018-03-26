@@ -32,12 +32,13 @@ contract Vesting is BasicToken, Ownable {
   uint256 private technicals_cliff;
   uint256 private technicals_duration;
 
+  uint256 private reserve_amount;
   uint256 private holders_amount_to_distribute;
 
   function Vesting(uint256 _advisors_amount, uint256 _advisors_bonus_percentage, uint256 _advisors_bonus_target,
                    uint256 _founders_amount, uint256 _founders_cliff, uint256 _founders_duration,
                    uint256 _technicals_amount, uint256 _technicals_cliff, uint256 _technicals_duration,
-                   uint256 _holders_amount) public {
+                   uint256 _reserve_amount, uint256 _holders_amount) public {
     advisors_amount_to_distribute = _advisors_amount;
     advisors_bonus_percentage = _advisors_bonus_percentage;
     advisors_bonus_target = now + _advisors_bonus_target;
@@ -50,7 +51,12 @@ contract Vesting is BasicToken, Ownable {
     technicals_cliff = now + _technicals_cliff;
     technicals_duration = _technicals_duration;
 
+    reserve_amount = _reserve_amount;
     holders_amount_to_distribute = _holders_amount;
+  }
+
+  function reserveBalance() public view returns (uint256 balance) {
+    return reserve_amount;
   }
 
   function allocate(address _to, uint256 _amount, UserType _type) public onlyOwner returns (bool success) {
@@ -82,6 +88,7 @@ contract Vesting is BasicToken, Ownable {
     uint256 duration = 0;
     uint256 bonus_percentage = 0;
     uint256 bonus_target = 0;
+    uint256 bonus_calculated = 0;
     grantState storage grant;
 
     if (_type == UserType.ADVISOR) {
@@ -110,11 +117,11 @@ contract Vesting is BasicToken, Ownable {
     // add bonus if you are eligible to it or burn it
     if (bonus_percentage > 0 && grant.totalDistributed == 0) {
       if (now >= bonus_target) {
-        available_to_distribute = available_to_distribute.add(grant.totalAmount.mul(bonus_percentage).div(100));
-      } else {
-        totalSupply_ = totalSupply_.sub(grant.totalAmount.mul(bonus_percentage).div(100));
-        Burn(_to, grant.totalAmount.mul(100).div(bonus_percentage));
-        Transfer(_to, address(0), _amount);
+        bonus_calculated = grant.totalAmount.mul(bonus_percentage).div(100);
+        if (reserve_amount >= bonus_calculated) {
+          reserve_amount = reserve_amount.sub(bonus_calculated);
+          available_to_distribute = available_to_distribute.add(bonus_calculated);
+        }
       }
     }
 
