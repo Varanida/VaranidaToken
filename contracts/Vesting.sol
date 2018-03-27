@@ -15,6 +15,7 @@ contract Vesting is BasicToken, Ownable {
   struct grantState {
     uint256 totalAmount;
     uint256 totalDistributed;
+    bool bonus;
   }
 
   mapping(address => grantState) private advisors_grants;
@@ -59,19 +60,28 @@ contract Vesting is BasicToken, Ownable {
     return reserve_amount;
   }
 
+  function cancelAdvisorBonus(address _to) public onlyOwner returns (bool success) {
+    if (advisors_grants[_to].bonus) {
+      advisors_grants[_to].bonus = false;
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   function allocate(address _to, uint256 _amount, UserType _type) public onlyOwner returns (bool success) {
     if (_type == UserType.ADVISOR) {
       require(_amount <= advisors_amount_to_distribute);
       advisors_amount_to_distribute = advisors_amount_to_distribute.sub(_amount);
-      advisors_grants[_to] = grantState({totalAmount: _amount, totalDistributed: 0});
+      advisors_grants[_to] = grantState({totalAmount: _amount, totalDistributed: 0, bonus: true});
     } else if (_type == UserType.FOUNDER) {
       require(_amount <= founders_amount_to_distribute);
       founders_amount_to_distribute = founders_amount_to_distribute.sub(_amount);
-      founders_grants[_to] = grantState({totalAmount: _amount, totalDistributed: 0});
+      founders_grants[_to] = grantState({totalAmount: _amount, totalDistributed: 0, bonus: false});
     } else if (_type == UserType.TECHNICAL) {
       require(_amount <= technicals_amount_to_distribute);
       technicals_amount_to_distribute = technicals_amount_to_distribute.sub(_amount);
-      technicals_grants[_to] = grantState({totalAmount: _amount, totalDistributed: 0});
+      technicals_grants[_to] = grantState({totalAmount: _amount, totalDistributed: 0, bonus: false});
     } else { // holders
       require(_amount <= holders_amount_to_distribute);
       holders_amount_to_distribute = holders_amount_to_distribute.sub(_amount);
@@ -115,13 +125,15 @@ contract Vesting is BasicToken, Ownable {
     }
 
     // add bonus if you are eligible to it or burn it
-    if (bonus_percentage > 0 && grant.totalDistributed == 0) {
+    if (bonus_percentage > 0 && grant.bonus) {
       if (now >= bonus_target) {
         bonus_calculated = grant.totalAmount.mul(bonus_percentage).div(100);
         if (reserve_amount >= bonus_calculated) {
           reserve_amount = reserve_amount.sub(bonus_calculated);
           available_to_distribute = available_to_distribute.add(bonus_calculated);
         }
+      } else {
+        grant.bonus = false;
       }
     }
 

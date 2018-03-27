@@ -86,4 +86,37 @@ contract('Varanida - claim tokens with bonus', function(accounts) {
       });
   });
 
+  it("owner can can burn advisors bonuses", function() {
+    var vara;
+    return Varanida.new() // Redeploy Varanida contract
+      .then(function(instance) {
+        vara = instance;
+        return vara.allocate(advisor, 40000000*allocateAmount, 1, {from: owner});
+      }).then(function(){
+        return Time.increaseTime(0.5*year);
+      }).then(function(){
+        return vara.cancelAdvisorBonus(advisor, {from: advisor});
+      }).then(function() {
+        assert.fail('This won\'t happen.');
+      }).catch(function(err) {
+        assert(err.message.search('revert') >= 0);
+      }).then(function(){
+        return vara.cancelAdvisorBonus(advisor, {from: owner});
+      }).then(function(res) {
+        assert(res);
+      }).then(function(){
+        return vara.claimTokens(advisor, 52000000*allocateAmount, 1, {from: advisor});
+      }).then(function() {
+        assert.fail('This won\'t happen.');
+      }).catch(function(err) {
+        assert(err.message.search('revert') >= 0);
+      }).then(function(){
+        return vara.claimTokens(advisor, 40000000*allocateAmount, 1, {from: advisor});
+      }).then(function() {
+        return vara.balanceOf(advisor, {from: advisor});
+      }).then(function(result){
+        assert(result.toNumber()===40000000*allocateAmount);
+      })
+  });
+
 });
