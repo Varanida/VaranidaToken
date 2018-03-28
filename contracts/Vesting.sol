@@ -69,6 +69,16 @@ contract Vesting is BasicToken, Ownable {
     }
   }
 
+  function burnUndistributedTokens() public onlyOwner returns (bool success) {
+    require(holders_amount_to_distribute > 0);
+    uint256 amountToBurn = holders_amount_to_distribute;
+    totalSupply_ = totalSupply_.sub(amountToBurn);
+    holders_amount_to_distribute = 0;
+    Burn(msg.sender, amountToBurn);
+    Transfer(msg.sender, address(0), amountToBurn);
+    return true;
+  }
+
   function allocate(address _to, uint256 _amount, UserType _type) public onlyOwner returns (bool success) {
     if (_type == UserType.ADVISOR) {
       require(_amount <= advisors_amount_to_distribute);
