@@ -34,12 +34,10 @@ contract Vesting is Reserve, BasicToken, Ownable {
   uint256 private technicals_cliff;
   uint256 private technicals_duration;
 
-  uint256 private holders_amount_to_distribute;
-
   function Vesting(uint256 _advisors_amount, uint256 _advisors_bonus_percentage, uint256 _advisors_bonus_target,
                    uint256 _founders_amount, uint256 _founders_cliff, uint256 _founders_duration,
                    uint256 _technicals_amount, uint256 _technicals_cliff, uint256 _technicals_duration,
-                   uint256 _holders_amount, uint256 _reserve_amount)
+                   uint256 _reserve_amount)
           Reserve(_reserve_amount) public {
     advisors_amount_to_distribute = _advisors_amount;
     advisors_bonus_percentage = _advisors_bonus_percentage;
@@ -52,8 +50,6 @@ contract Vesting is Reserve, BasicToken, Ownable {
     technicals_amount_to_distribute = _technicals_amount;
     technicals_cliff = now + _technicals_cliff;
     technicals_duration = _technicals_duration;
-
-    holders_amount_to_distribute = _holders_amount;
   }
 
   function cancelAdvisorBonus(address _to) public onlyOwner returns (bool success) {
@@ -63,16 +59,6 @@ contract Vesting is Reserve, BasicToken, Ownable {
     } else {
       return false;
     }
-  }
-
-  function burnUndistributedTokens() public onlyOwner returns (bool success) {
-    require(holders_amount_to_distribute > 0);
-    uint256 amountToBurn = holders_amount_to_distribute;
-    totalSupply_ = totalSupply_.sub(amountToBurn);
-    holders_amount_to_distribute = 0;
-    Burn(msg.sender, amountToBurn);
-    Transfer(msg.sender, address(0), amountToBurn);
-    return true;
   }
 
   function allocate(address _to, uint256 _amount, UserType _type) public onlyOwner returns (bool success) {
@@ -88,11 +74,8 @@ contract Vesting is Reserve, BasicToken, Ownable {
       require(_amount <= technicals_amount_to_distribute);
       technicals_amount_to_distribute = technicals_amount_to_distribute.sub(_amount);
       technicals_grants[_to] = grantState({totalAmount: _amount, totalDistributed: 0, bonus: false});
-    } else { // holders
-      require(_amount <= holders_amount_to_distribute);
-      holders_amount_to_distribute = holders_amount_to_distribute.sub(_amount);
-      balances[_to] = balances[_to].add(_amount);
-      Transfer(address(0), _to, _amount);
+    } else {
+      revert();
     }
     Allocate(_to, _amount);
     return true;
