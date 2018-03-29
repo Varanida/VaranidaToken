@@ -9,7 +9,6 @@ contract Vesting is Reserve, BasicToken, Ownable {
   using SafeMath for uint256;
 
   event Allocate(address indexed to, uint256 amount);
-  event Burn(address indexed from, uint256 amount);
 
   enum UserType { DEFAULT, ADVISOR, FOUNDER, TECHNICAL }
 
@@ -36,9 +35,7 @@ contract Vesting is Reserve, BasicToken, Ownable {
 
   function Vesting(uint256 _advisors_amount, uint256 _advisors_bonus_percentage, uint256 _advisors_bonus_target,
                    uint256 _founders_amount, uint256 _founders_cliff, uint256 _founders_duration,
-                   uint256 _technicals_amount, uint256 _technicals_cliff, uint256 _technicals_duration,
-                   uint256 _reserve_amount)
-          Reserve(_reserve_amount) public {
+                   uint256 _technicals_amount, uint256 _technicals_cliff, uint256 _technicals_duration) public {
     advisors_amount_to_distribute = _advisors_amount;
     advisors_bonus_percentage = _advisors_bonus_percentage;
     advisors_bonus_target = now + _advisors_bonus_target;
