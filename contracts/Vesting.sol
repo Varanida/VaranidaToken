@@ -1,10 +1,11 @@
 pragma solidity ^0.4.18;
 
+import './Reserve.sol';
 import 'zeppelin-solidity/contracts/token/ERC20/BasicToken.sol';
 import 'zeppelin-solidity/contracts/ownership/Ownable.sol';
 import 'zeppelin-solidity/contracts/math/SafeMath.sol';
 
-contract Vesting is BasicToken, Ownable {
+contract Vesting is Reserve, BasicToken, Ownable {
   using SafeMath for uint256;
 
   event Allocate(address indexed to, uint256 amount);
@@ -33,13 +34,13 @@ contract Vesting is BasicToken, Ownable {
   uint256 private technicals_cliff;
   uint256 private technicals_duration;
 
-  uint256 private reserve_amount;
   uint256 private holders_amount_to_distribute;
 
   function Vesting(uint256 _advisors_amount, uint256 _advisors_bonus_percentage, uint256 _advisors_bonus_target,
                    uint256 _founders_amount, uint256 _founders_cliff, uint256 _founders_duration,
                    uint256 _technicals_amount, uint256 _technicals_cliff, uint256 _technicals_duration,
-                   uint256 _reserve_amount, uint256 _holders_amount) public {
+                   uint256 _holders_amount, uint256 _reserve_amount)
+          Reserve(_reserve_amount) public {
     advisors_amount_to_distribute = _advisors_amount;
     advisors_bonus_percentage = _advisors_bonus_percentage;
     advisors_bonus_target = now + _advisors_bonus_target;
@@ -52,12 +53,7 @@ contract Vesting is BasicToken, Ownable {
     technicals_cliff = now + _technicals_cliff;
     technicals_duration = _technicals_duration;
 
-    reserve_amount = _reserve_amount;
     holders_amount_to_distribute = _holders_amount;
-  }
-
-  function reserveBalance() public view returns (uint256 balance) {
-    return reserve_amount;
   }
 
   function cancelAdvisorBonus(address _to) public onlyOwner returns (bool success) {

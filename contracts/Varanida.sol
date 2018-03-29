@@ -4,7 +4,7 @@ import './MintableToken.sol';
 import './Vesting.sol';
 import 'zeppelin-solidity/contracts/token/ERC20/PausableToken.sol';
 
-contract Varanida is PausableToken, MintableToken, Vesting {
+contract Varanida is MintableToken, PausableToken, Vesting {
 
   // Token basic informations
   string public constant name = 'Varanida';
@@ -27,23 +27,24 @@ contract Varanida is PausableToken, MintableToken, Vesting {
   uint256 constant TECHS_AMOUNT = 20000000 * UNIT;
   uint256 constant TECHS_CLIFF = 182 days;
   uint256 constant TECHS_DURATION = 182 days;
-  uint256 constant RESERVE_AMOUNT = 110000000 * UNIT;
   uint256 constant HOLDERS_AMOUNT = 670000000 * UNIT;
+  uint256 constant RESERVE_AMOUNT = 110000000 * UNIT;
 
   function Varanida()
     MintableToken(DAILY_MINTING_LIMIT, AIRDROP_AMOUNT)
+    Reserve(RESERVE_AMOUNT)
     Vesting(ADVISORS_AMOUNT, ADVISORS_BONUS_PERCENTAGE, ADVISORS_BONUS_TARGET,
             FOUNDERS_AMOUNT, FOUNDERS_CLIFF, FOUNDERS_DURATION,
             TECHS_AMOUNT, TECHS_CLIFF, TECHS_DURATION,
-            RESERVE_AMOUNT, HOLDERS_AMOUNT)
+            HOLDERS_AMOUNT, RESERVE_AMOUNT)
     public {
       totalSupply_ =
         AIRDROP_AMOUNT
         + ADVISORS_AMOUNT
         + FOUNDERS_AMOUNT
         + TECHS_AMOUNT
-        + RESERVE_AMOUNT
-        + HOLDERS_AMOUNT;
+        + HOLDERS_AMOUNT
+        + RESERVE_AMOUNT;
     }
 
 }
