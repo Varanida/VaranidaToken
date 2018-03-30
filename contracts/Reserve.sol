@@ -22,10 +22,6 @@ contract Reserve is Ownable {
     return reserve_amount;
   }
 
-  function test() public view returns (address[]) {
-    return owners;
-  }
-
   function addOwner(address new_owner) public onlyOwner {
     owners.push(new_owner);
     OwnerAddition(new_owner);
