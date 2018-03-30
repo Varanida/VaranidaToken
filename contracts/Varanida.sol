@@ -3,9 +3,8 @@ pragma solidity ^0.4.18;
 import './Ico.sol';
 import './MintableToken.sol';
 import './Vesting.sol';
-import 'zeppelin-solidity/contracts/token/ERC20/PausableToken.sol';
 
-contract Varanida is Ico, MintableToken, PausableToken, Vesting {
+contract Varanida is Ico, MintableToken, Vesting {
 
   // Token basic informations
   string public constant name = 'Varanida';
@@ -38,10 +37,10 @@ contract Varanida is Ico, MintableToken, PausableToken, Vesting {
   function Varanida()
     Ico(ICO_AMOUNT)
     MintableToken(DAILY_MINTING_LIMIT, AIRDROP_AMOUNT)
-    Reserve(RESERVE_AMOUNT)
     Vesting(ADVISORS_AMOUNT, ADVISORS_BONUS_PERCENTAGE, ADVISORS_BONUS_TARGET,
             FOUNDERS_AMOUNT, FOUNDERS_CLIFF, FOUNDERS_DURATION,
-            TECHS_AMOUNT, TECHS_CLIFF, TECHS_DURATION)
+            TECHS_AMOUNT, TECHS_CLIFF, TECHS_DURATION,
+            RESERVE_AMOUNT)
     public {
       totalSupply_ =
         AIRDROP_AMOUNT
