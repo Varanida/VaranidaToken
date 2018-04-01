@@ -75,4 +75,29 @@ contract('Varanida - ICO', function(accounts) {
       });
   });
 
+  it("should let owner fix owners", function() {
+    var vara;
+    return Varanida.new()
+      .then(function(instance) {
+        vara = instance;
+        return vara.addOwner(random_guy1, {from: owner});
+      }).then(function() {
+        return vara.addOwner(random_guy2, {from: owner});
+      }).then(function() {
+        return vara.fixOwners({from: owner});
+      }).then(function() {
+        return vara.addOwner(random_guy3, {from: owner});
+      }).then(function() {
+        assert.fail('This won\'t happen.');
+      }).catch(function(err) {
+        assert(err.message.search('revert') >= 0);
+      }).then(function() {
+        return vara.removeOwner(random_guy1, {from: owner});
+      }).then(function() {
+        assert.fail('This won\'t happen.');
+      }).catch(function(err) {
+        assert(err.message.search('revert') >= 0);
+      });
+  });
+
 });
