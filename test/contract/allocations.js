@@ -28,90 +28,86 @@ contract('Varanida - allocations & claiming', function(accounts) {
   });
 
   it("should not let owner allocate more tokens than allowed to advisors", function() {
-    var vara;
+    var vara, nb_calls = 0;
     return Varanida.deployed()
       .then(function(instance) {
         vara = instance;
+        nb_calls++;
         return vara.allocate(random_guy1, 40000000*allocateAmount, 1, {from: owner});
       }).then(function(){
         return Time.increaseTime(2*year);
       }).then(function(){
+        nb_calls++;
         return vara.claimTokens(random_guy1, 40000000*allocateAmount, 1, {from: random_guy1});
       }).then(function() {
+        nb_calls++;
         return vara.balanceOf(random_guy1, {from: random_guy1});
       }).then(function(result){
         assert(result.toNumber()===40000000*allocateAmount);
       }).then(function() {
+        nb_calls++;
         return vara.allocate(random_guy1, allocateAmount, 1, {from: owner});
       }).then(function() {
         assert.fail('This won\'t happen.');
       }).catch(function(err) {
         assert(err.message.search('revert') >= 0);
+        assert(nb_calls === 4);
       });
   });
 
   it("should not let owner allocate more tokens than allowed to founders", function() {
-    var vara;
+    var vara, nb_calls = 0;
     return Varanida.deployed()
       .then(function(instance) {
         vara = instance;
+        nb_calls++;
         return vara.allocate(random_guy2, 130000000*allocateAmount, 2, {from: owner});
       }).then(function(){
         return Time.increaseTime(2*year);
       }).then(function(){
+        nb_calls++;
         return vara.claimTokens(random_guy2, 130000000*allocateAmount, 2, {from: random_guy2});
       }).then(function() {
+        nb_calls++;
         return vara.balanceOf(random_guy2, {from: random_guy2});
       }).then(function(result){
         assert(result.toNumber()===130000000*allocateAmount);
       }).then(function() {
+        nb_calls++;
         return vara.allocate(random_guy2, allocateAmount, 2, {from: owner});
       }).then(function() {
         assert.fail('This won\'t happen.');
       }).catch(function(err) {
         assert(err.message.search('revert') >= 0);
+        assert(nb_calls === 4);
       });
   });
 
   it("should not let owner allocate more tokens than allowed to technicals", function() {
-    var vara;
+    var vara, nb_calls = 0;
     return Varanida.deployed()
       .then(function(instance) {
         vara = instance;
+        nb_calls++;
         return vara.allocate(random_guy3, 20000000*allocateAmount, 3, {from: owner});
       }).then(function(){
         return Time.increaseTime(2*year);
       }).then(function(){
+        nb_calls++;
         return vara.claimTokens(random_guy3, 20000000*allocateAmount, 3, {from: random_guy3});
       }).then(function() {
+        nb_calls++;
         return vara.balanceOf(random_guy3, {from: random_guy3});
       }).then(function(result){
         assert(result.toNumber()===20000000*allocateAmount);
       }).then(function() {
+        nb_calls++;
         return vara.allocate(random_guy3, allocateAmount, 3, {from: owner});
       }).then(function() {
         assert.fail('This won\'t happen.');
       }).catch(function(err) {
         assert(err.message.search('revert') >= 0);
-      });
-  });
-
-  it("should not let owner allocate more tokens than allowed to users", function() {
-    var vara;
-    return Varanida.deployed()
-      .then(function(instance) {
-        vara = instance;
-        return vara.allocate(random_guy4, 670000000*allocateAmount, 0, {from: owner});
-      }).then(function() {
-        return vara.balanceOf(random_guy4, {from: random_guy4});
-      }).then(function(result){
-        assert(result.toNumber()===670000000*allocateAmount);
-      }).then(function() {
-        return vara.allocate(random_guy4, allocateAmount, 0, {from: owner});
-      }).then(function() {
-        assert.fail('This won\'t happen.');
-      }).catch(function(err) {
-        assert(err.message.search('revert') >= 0);
+        assert(nb_calls === 4);
       });
   });
 

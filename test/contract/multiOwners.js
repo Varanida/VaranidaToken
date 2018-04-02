@@ -12,91 +12,105 @@ contract('Varanida - ICO', function(accounts) {
   allocateAmount = Math.pow(10,18);
 
   it("should not let users change owners", function() {
-    var vara;
+    var vara, nb_calls = 0;
     return Varanida.new()
       .then(function(instance) {
         vara = instance;
+        nb_calls++;
         return vara.addOwner(random_guy1, {from: owner});
       }).then(function() {
+        nb_calls++;
         return vara.addOwner(random_guy2, {from: bad_guy});
       }).then(function() {
         assert.fail('This won\'t happen.');
       }).catch(function(err) {
         assert(err.message.search('revert') >= 0);
       }).then(function() {
+        nb_calls++;
         return vara.removeOwner(random_guy1, {from: bad_guy});
       }).then(function() {
         assert.fail('This won\'t happen.');
       }).catch(function(err) {
         assert(err.message.search('revert') >= 0);
+        assert(nb_calls === 3);
       });
   });
 
   it("should let owner change owners", function() {
-    var vara;
-    var removed_1 = false, removed_2 = false, removed_3 = false;
+    var vara, nb_calls = 0;
     return Varanida.new()
       .then(function(instance) {
         vara = instance;
+        nb_calls++;
         return vara.addOwner(random_guy1, {from: owner});
       }).then(function() {
+        nb_calls++;
         return vara.addOwner(random_guy2, {from: owner});
       }).then(function() {
+        nb_calls++;
         return vara.addOwner(random_guy3, {from: owner});
       }).then(function() {
+        nb_calls++;
         return vara.removeOwner(random_guy1, {from: owner});
       }).then(function() {
-        removed_1 = true;
+        nb_calls++;
         return vara.removeOwner(random_guy1, {from: owner});
       }).then(function() {
         assert.fail('This won\'t happen.');
       }).catch(function(err) {
         assert(err.message.search('revert') >= 0);
       }).then(function() {
+        nb_calls++;
         return vara.removeOwner(random_guy3, {from: owner});
       }).then(function() {
-        removed_3 = true;
+        nb_calls++;
         return vara.removeOwner(random_guy3, {from: owner});
       }).then(function() {
         assert.fail('This won\'t happen.');
       }).catch(function(err) {
         assert(err.message.search('revert') >= 0);
       }).then(function() {
+        nb_calls++;
         return vara.removeOwner(random_guy2, {from: owner});
       }).then(function() {
-        removed_2 = true;
+        nb_calls++;
         return vara.removeOwner(random_guy2, {from: owner});
       }).then(function() {
         assert.fail('This won\'t happen.');
       }).catch(function(err) {
         assert(err.message.search('revert') >= 0);
-      }).then(function() {
-        assert(removed_1 && removed_2 && removed_3);
+        assert(nb_calls === 9);
       });
   });
 
   it("should let owner fix owners", function() {
-    var vara;
+    var vara, nb_calls = 0;
     return Varanida.new()
       .then(function(instance) {
         vara = instance;
+        nb_calls++;
         return vara.addOwner(random_guy1, {from: owner});
       }).then(function() {
+        nb_calls++;
         return vara.addOwner(random_guy2, {from: owner});
       }).then(function() {
+        nb_calls++;
         return vara.fixOwners({from: owner});
       }).then(function() {
+        nb_calls++;
         return vara.addOwner(random_guy3, {from: owner});
       }).then(function() {
         assert.fail('This won\'t happen.');
       }).catch(function(err) {
         assert(err.message.search('revert') >= 0);
       }).then(function() {
+        nb_calls++;
         return vara.removeOwner(random_guy1, {from: owner});
       }).then(function() {
         assert.fail('This won\'t happen.');
       }).catch(function(err) {
         assert(err.message.search('revert') >= 0);
+        assert(nb_calls === 5);
       });
   });
 

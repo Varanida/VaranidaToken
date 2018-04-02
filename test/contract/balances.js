@@ -11,15 +11,18 @@ contract('Varanida - Balances', function(accounts) {
   mintedAmount = 1*Math.pow(10,18);
 
   it("should let everyone see every balances", function() {
-    var vara;
+    var vara, nb_calls = 0;
     return Varanida.deployed()
       .then(function(instance) {
         vara = instance;
+        nb_calls++;
         return vara.mint(random_guy2, mintedAmount, {from: owner});
       }).then(function() {
+        nb_calls++;
         return vara.balanceOf(random_guy2, {from: random_guy});
       }).then(function(result){
         assert(result.toNumber()===mintedAmount);
+        assert(nb_calls === 2);
       });
   });
 

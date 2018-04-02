@@ -13,80 +13,96 @@ contract('Varanida - claim tokens', function(accounts) {
   allocateAmount = Math.pow(10,18);
 
   it("advisors should not claim more tokens than they are allowed to", function() {
-    var vara;
+    var vara, nb_calls = 0;
     return Varanida.new() // Redeploy Varanida contract
       .then(function(instance) {
         vara = instance;
+        nb_calls++;
         return vara.allocate(advisor, 100*allocateAmount, 1, {from: owner});
       }).then(function(){
+        nb_calls++;
         return vara.claimTokens(advisor, 101*allocateAmount, 1, {from: advisor});
       }).then(function() {
         assert.fail('This won\'t happen.');
       }).catch(function(err) {
         assert(err.message.search('revert') >= 0);
       }).then(function(){
+        nb_calls++;
         return vara.claimTokens(advisor, 100*allocateAmount, 1, {from: advisor});
       }).then(function() {
+        nb_calls++;
         return vara.balanceOf(advisor, {from: advisor});
       }).then(function(result){
         assert(result.toNumber()===100*allocateAmount);
+        assert(nb_calls === 4);
       });
   });
 
   it("founders should not claim more tokens than they are allowed to", function() {
-    var vara;
+    var vara, nb_calls = 0;
     return Varanida.new() // Redeploy Varanida contract
       .then(function(instance) {
         vara = instance;
+        nb_calls++;
         return vara.allocate(founder, 100*allocateAmount, 2, {from: owner});
       }).then(function(){
         return Time.increaseTime(year);
       }).then(function(){
+        nb_calls++;
         return vara.claimTokens(founder, allocateAmount, 2, {from: founder});
       }).then(function() {
         assert.fail('This won\'t happen.');
       }).catch(function(err) {
         assert(err.message.search('revert') >= 0);
-      }).then(function(){
+      }).then(function() {
         return Time.increaseTime(0.5*year);
-      }).then(function(){
+      }).then(function() {
+        nb_calls++;
         return vara.claimTokens(founder, 51*allocateAmount, 2, {from: founder});
       }).then(function() {
         assert.fail('This won\'t happen.');
       }).catch(function(err) {
         assert(err.message.search('revert') >= 0);
-      }).then(function(){
+      }).then(function() {
+        nb_calls++;
         return vara.claimTokens(founder, 50*allocateAmount, 2, {from: founder});
       }).then(function() {
+        nb_calls++;
         return vara.balanceOf(founder, {from: founder});
       }).then(function(result){
         assert(result.toNumber()===50*allocateAmount);
-      }).then(function(){
+      }).then(function() {
         return Time.increaseTime(year);
-      }).then(function(){
+      }).then(function() {
+        nb_calls++;
         return vara.claimTokens(founder, 51*allocateAmount, 2, {from: founder});
       }).then(function() {
         assert.fail('This won\'t happen.');
       }).catch(function(err) {
         assert(err.message.search('revert') >= 0);
-      }).then(function(){
+      }).then(function() {
+        nb_calls++;
         return vara.claimTokens(founder, 50*allocateAmount, 2, {from: founder});
       }).then(function() {
+        nb_calls++;
         return vara.balanceOf(founder, {from: founder});
       }).then(function(result){
         assert(result.toNumber()===100*allocateAmount);
+        assert(nb_calls === 8);
       });
   });
 
   it("technicals should not claim more tokens than they are allowed to", function() {
-    var vara;
+    var vara, nb_calls = 0;
     return Varanida.new() // Redeploy Varanida contract
       .then(function(instance) {
         vara = instance;
+        nb_calls++;
         return vara.allocate(technical, 100*allocateAmount, 3, {from: owner});
-      }).then(function(){
+      }).then(function() {
         return Time.increaseTime(0.5*year);
-      }).then(function(){
+      }).then(function() {
+        nb_calls++;
         return vara.claimTokens(technical, allocateAmount, 3, {from: technical});
       }).then(function() {
         assert.fail('This won\'t happen.');
@@ -95,31 +111,38 @@ contract('Varanida - claim tokens', function(accounts) {
       }).then(function(){
         return Time.increaseTime(0.25*year);
       }).then(function(){
+        nb_calls++;
         return vara.claimTokens(technical, 51*allocateAmount, 3, {from: technical});
       }).then(function() {
         assert.fail('This won\'t happen.');
       }).catch(function(err) {
         assert(err.message.search('revert') >= 0);
       }).then(function(){
+        nb_calls++;
         return vara.claimTokens(technical, 50*allocateAmount, 3, {from: technical});
       }).then(function() {
+        nb_calls++;
         return vara.balanceOf(technical, {from: technical});
       }).then(function(result){
         assert(result.toNumber()===50*allocateAmount);
       }).then(function(){
         return Time.increaseTime(0.5*year);
       }).then(function(){
+        nb_calls++;
         return vara.claimTokens(technical, 51*allocateAmount, 3, {from: technical});
       }).then(function() {
         assert.fail('This won\'t happen.');
       }).catch(function(err) {
         assert(err.message.search('revert') >= 0);
       }).then(function(){
+        nb_calls++;
         return vara.claimTokens(technical, 50*allocateAmount, 3, {from: technical});
       }).then(function() {
+        nb_calls++;
         return vara.balanceOf(technical, {from: technical});
       }).then(function(result){
         assert(result.toNumber()===100*allocateAmount);
+        assert(nb_calls === 8);
       });
   });
 

@@ -25,21 +25,26 @@ contract('Varanida - Transfers', function(accounts) {
   });
 
   it("should let everyone transfer their tokens", function() {
-    var vara;
+    var vara, nb_calls = 0;
     return Varanida.deployed()
       .then(function(instance) {
         vara = instance;
+        nb_calls++;
         return vara.mint(random_guy, mintedAmount, {from: owner});
       }).then(function() {
+        nb_calls++;
         return vara.transfer(random_guy2, transferAmount, {from: random_guy});
       }).then(function() {
+        nb_calls++;
         return vara.balanceOf(random_guy, {from: random_guy});
       }).then(function(result){
         assert(result.toNumber()===mintedAmount-transferAmount);
       }).then(function() {
+        nb_calls++;
         return vara.balanceOf(random_guy2, {from: random_guy2});
       }).then(function(result){
         assert(result.toNumber()===transferAmount);
+        assert(nb_calls === 4);
       });
   });
 

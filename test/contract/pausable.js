@@ -23,28 +23,35 @@ contract('Varanida - Pausable', function(accounts) {
   });
 
   it("should let owner pause the ERC20 token", function() {
-    var vara;
+    var vara, nb_calls = 0;
     return Varanida.deployed()
       .then(function(instance) {
         vara = instance;
+        nb_calls++;
         return vara.mint(bad_guy, mintedAmount, {from: owner});
       }).then(function() {
+        nb_calls++;
         return vara.pause({from: owner});
       }).then(function() {
+        nb_calls++;
         return vara.transfer(random_guy, mintedAmount, {from: bad_guy});
       }).then(function() {
         assert.fail('This won\'t happen.');
       }).catch(function(err) {
         assert(err.message.search('revert') >= 0);
       }).then(function() {
+        nb_calls++;
         return vara.unpause({from: owner});
       }).then(function() {
+        nb_calls++;
         return vara.transfer(random_guy, mintedAmount, {from: bad_guy});
       }).then(function() {
+        nb_calls++;
         return vara.balanceOf(random_guy, {from: random_guy});
       }).then(function(result){
         assert(result.toNumber()===mintedAmount);
-      })
+        assert(nb_calls === 6);
+      });
   });
 
 });
