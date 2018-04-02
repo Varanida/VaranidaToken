@@ -5,22 +5,10 @@
   "main": "index.js",
   "scripts": {
     "build": "truffle compile",
-    "start": "node index.js",
-    "deploy:dev": "truffle migrate --network dev",
-    "test": "truffle test ./test/contract/*",
-    "test:api": "mocha -R spec test/api"
+    "deploy": "truffle migrate --network truffle",
+    "test": "truffle test ./test/contract/*"
   },
   "license": "GPL-v3",
-  "dependencies": {
-    "body-parser": "^1.16.1",
-    "cors": "^2.8.4",
-    "express": "^4.14.1",
-    "keythereum": "^0.4.2",
-    "moment": "^2.20.1",
-    "truffle-contract": "^1.1.10",
-    "validator": "^7.0.0",
-    "web3": "^0.18.2"
-  },
   "devDependencies": {
     "async": "^2.6.0",
     "should": "^13.1.3",
