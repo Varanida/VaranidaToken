@@ -37,8 +37,7 @@ contract Reserve is MultiOwnable, PausableToken {
     return reserve_amount;
   }
 
-  function withdraw(address _address, uint256 _amount) cantChangeOwners onlyOwners public {
-    require(_amount <= reserve_amount);
+  function withdraw(address _address, uint256 _amount) cantChangeOwners onlyOwners public returns (bool) {
     uint256 vote_count = 0;
     votes[msg.sender] = vote({_address: _address, _amount: _amount});
     for (uint256 i = 0; i < owners.length; i++) {
@@ -53,11 +52,14 @@ contract Reserve is MultiOwnable, PausableToken {
       } else {
         total_withdrawed = total_withdrawed.add(_amount);
         reserve_amount = reserve_amount.sub(_amount);
+        totalSupply_ = totalSupply_.add(_amount);
         balances[_address] = balances[_address].add(_amount);
-        Transfer(address(0), _address, _amount);
         Withdraw(_address, _amount);
+        Transfer(address(0), _address, _amount);
+        return true;
       }
     }
+    return false;
   }
 
 }

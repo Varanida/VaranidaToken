@@ -2,7 +2,7 @@
   "name": "varanida-contracts",
   "version": "1.0.0",
   "description": "Varanida contracts to be runned on Ethereum chain.",
-  "main": "index.js",
+  "main": "./contracts/Varanida.sol",
   "scripts": {
     "build": "truffle compile",
     "deploy": "truffle migrate --network truffle",
@@ -17,7 +17,8 @@
     "zeppelin-solidity": "1.7.0"
   },
   "directories": {
-    "test": "test"
+    "test": "test",
+    "contract": "contracts"
   },
   "repository": {
     "type": "git",

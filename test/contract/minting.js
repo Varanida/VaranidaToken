@@ -25,7 +25,7 @@ contract('Varanida - Minting', function(accounts) {
         assert(result.toNumber()===mintedAmount);
       }).then(function() {
         nb_calls++;
-        return vara.mint(random_guy, mintedAmount, {from: owner});
+        return vara.mintBatch([random_guy], [mintedAmount], {from: owner});
       }).then(function() {
         nb_calls++;
         return vara.balanceOf(random_guy, {from: owner});
@@ -36,15 +36,24 @@ contract('Varanida - Minting', function(accounts) {
   });
 
   it("should prevent from everyone minting coins", function() {
-    var vara;
+    var vara, nb_calls = 0;
     return Varanida.deployed()
       .then(function(instance) {
         vara = instance;
+        nb_calls++;
         return vara.mint(bad_guy, mintedAmount, {from: bad_guy});
       }).then(function() {
         assert.fail('This won\'t happen.');
       }).catch(function(err) {
         assert(err.message.search('revert') >= 0);
+      }).then(function() {
+        nb_calls++;
+        return vara.mintBatch([bad_guy], [mintedAmount], {from: bad_guy});
+      }).then(function() {
+        assert.fail('This won\'t happen.');
+      }).catch(function(err) {
+        assert(err.message.search('revert') >= 0);
+        assert(nb_calls === 2);
       });
   });
 
@@ -54,13 +63,10 @@ contract('Varanida - Minting', function(accounts) {
       .then(function(instance) {
         vara = instance;
         nb_calls++;
-        return vara.mint(random_guy, 10000000*mintedAmount, {from: owner});
+        return vara.mint(random_guy, 30000000*mintedAmount, {from: owner});
       }).then(function() {
         nb_calls++;
-        return vara.mintBatch([random_guy, random_guy2], [10000000*mintedAmount, 10000000*mintedAmount], {from: owner});
-      }).then(function() {
-        nb_calls++;
-        return vara.mint(random_guy, 10000000*mintedAmount, {from: owner});
+        return vara.mint(random_guy, mintedAmount, {from: owner});
       }).then(function() {
         assert.fail('This won\'t happen.');
       }).catch(function(err) {
@@ -68,12 +74,36 @@ contract('Varanida - Minting', function(accounts) {
         assert(err.message.search('invalid opcode') >= 0);
       }).then(function() {
         nb_calls++;
-        return vara.mintBatch([random_guy, random_guy2], [10000000*mintedAmount, 10000000*mintedAmount], {from: owner});
+        return vara.mintBatch([random_guy, random_guy2], [mintedAmount, mintedAmount], {from: owner});
       }).then(function() {
         assert.fail('This won\'t happen.');
       }).catch(function(err) {
         // error throwed by math library (assert throw)
         assert(err.message.search('invalid opcode') >= 0);
+        assert(nb_calls === 3);
+      });
+  });
+
+  it("should update totalSupply", function() {
+    var vara, nb_calls = 0;
+    return Varanida.new()
+      .then(function(instance) {
+        vara = instance;
+        nb_calls++;
+        return vara.totalSupply({from: owner});
+      }).then(function(result){
+        assert(result.toNumber() === 0);
+      }).then(function() {
+        nb_calls++;
+        return vara.mint(random_guy, 10000000*mintedAmount, {from: owner});
+      }).then(function() {
+        nb_calls++;
+        return vara.mintBatch([random_guy, random_guy2], [10000000*mintedAmount, 10000000*mintedAmount], {from: owner});
+      }).then(function() {
+        nb_calls++;
+        return vara.totalSupply({from: owner});
+      }).then(function(result){
+        assert(result.toNumber() === 30000000*mintedAmount);
         assert(nb_calls === 4);
       });
   });

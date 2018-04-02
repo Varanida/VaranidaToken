@@ -42,13 +42,6 @@ contract Varanida is Ico, MintableToken, Vesting {
             FOUNDERS_AMOUNT, FOUNDERS_CLIFF, FOUNDERS_DURATION,
             TECHS_AMOUNT, TECHS_CLIFF, TECHS_DURATION,
             RESERVE_AMOUNT, RESERVE_MAJORITY_PERCENTAGE, RESERVE_DISTRIBUTION_DURATION)
-    public {
-      totalSupply_ =
-        ADVISORS_AMOUNT
-        + FOUNDERS_AMOUNT
-        + TECHS_AMOUNT
-        + ICO_AMOUNT
-        + RESERVE_AMOUNT;
-    }
+    public {}
 
 }

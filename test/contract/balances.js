@@ -25,32 +25,14 @@ contract('Varanida - Balances', function(accounts) {
       });
   });
 
-  it("should return totalSupply", function() {
-    var vara, nb_calls = 0;
+  it("should return an empty totalSupply", function() {
+    var vara;
     return Varanida.new()
       .then(function(instance) {
         vara = instance;
-        nb_calls++;
         return vara.totalSupply({from: owner});
       }).then(function(result){
-        assert(result.toNumber()===970000000*mintedAmount);
-      }).then(function() {
-        nb_calls++;
-        return vara.mint(random_guy, 10000000*mintedAmount, {from: owner});
-      }).then(function() {
-        nb_calls++;
-        return vara.totalSupply({from: owner});
-      }).then(function(result){
-        assert(result.toNumber()===980000000*mintedAmount);
-      }).then(function() {
-        nb_calls++;
-        return vara.mintBatch([random_guy, random_guy2], [10000000*mintedAmount, 10000000*mintedAmount], {from: owner});
-      }).then(function() {
-        nb_calls++;
-        return vara.totalSupply({from: owner});
-      }).then(function(result){
-        assert(result.toNumber()===1000000000*mintedAmount);
-        assert(nb_calls === 5);
+        assert(result.toNumber() === 0);
       });
   });
 

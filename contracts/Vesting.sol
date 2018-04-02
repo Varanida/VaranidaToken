@@ -125,6 +125,7 @@ contract Vesting is Reserve {
     }
 
     require(_amount <= available_to_distribute);
+    totalSupply_ = totalSupply_.add(_amount);
     grant.totalDistributed = grant.totalDistributed.add(_amount);
     balances[_to] = balances[_to].add(_amount);
     Transfer(address(0), _to, _amount);
