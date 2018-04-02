@@ -59,7 +59,7 @@ contract('Varanida - ICO', function(accounts) {
         nb_calls++;
         return vara.totalSupply({from: random_guy});
       }).then(function(result){
-        assert(result.toNumber()===1000000000*allocateAmount);
+        assert(result.toNumber()===970000000*allocateAmount);
       }).then(function() {
         nb_calls++;
         return vara.allocateTokens(random_guy, 170000000*allocateAmount, {from: owner});
@@ -79,7 +79,7 @@ contract('Varanida - ICO', function(accounts) {
         nb_calls++;
         return vara.totalSupply({from: random_guy});
       }).then(function(result){
-        assert(result.toNumber()===500000000*allocateAmount);
+        assert(result.toNumber()===470000000*allocateAmount);
         assert(nb_calls === 6);
       });
   });

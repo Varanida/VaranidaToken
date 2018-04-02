@@ -48,36 +48,33 @@ contract('Varanida - Minting', function(accounts) {
       });
   });
 
-  it("should prevent someone minting too much coins per day", function() {
+  it("should prevent from minting too much tokens", function() {
     var vara, nb_calls = 0;
-    return Varanida.deployed()
+    return Varanida.new()
       .then(function(instance) {
         vara = instance;
         nb_calls++;
-        return vara.mint(bad_guy, 20*mintedAmount, {from: owner});
+        return vara.mint(random_guy, 10000000*mintedAmount, {from: owner});
       }).then(function() {
         nb_calls++;
-        return vara.balanceOf(bad_guy, {from: owner});
-      }).then(function(result){
-        assert(result.toNumber()===20*mintedAmount);
+        return vara.mintBatch([random_guy, random_guy2], [10000000*mintedAmount, 10000000*mintedAmount], {from: owner});
       }).then(function() {
         nb_calls++;
-        return vara.mint(bad_guy, mintedAmount, {from: bad_guy});
+        return vara.mint(random_guy, 10000000*mintedAmount, {from: owner});
       }).then(function() {
         assert.fail('This won\'t happen.');
       }).catch(function(err) {
-        assert(err.message.search('revert') >= 0);
-      }).then(function(){
-        return Time.increaseTime(60*60*24);
+        // error throwed by math library (assert throw)
+        assert(err.message.search('invalid opcode') >= 0);
       }).then(function() {
         nb_calls++;
-        return vara.mint(bad_guy, 20*mintedAmount, {from: owner});
+        return vara.mintBatch([random_guy, random_guy2], [10000000*mintedAmount, 10000000*mintedAmount], {from: owner});
       }).then(function() {
-        nb_calls++;
-        return vara.balanceOf(bad_guy, {from: owner});
-      }).then(function(result){
-        assert(result.toNumber()===40*mintedAmount);
-        assert(nb_calls === 5);
+        assert.fail('This won\'t happen.');
+      }).catch(function(err) {
+        // error throwed by math library (assert throw)
+        assert(err.message.search('invalid opcode') >= 0);
+        assert(nb_calls === 4);
       });
   });
 

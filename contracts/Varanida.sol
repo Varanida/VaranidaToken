@@ -17,7 +17,6 @@ contract Varanida is Ico, MintableToken, Vesting {
   uint256 constant ICO_AMOUNT = 670000000 * UNIT;
 
   // Minting parameters
-  uint256 constant DAILY_MINTING_LIMIT = 20 * UNIT;
   uint256 constant AIRDROP_AMOUNT = 30000000 * UNIT;
 
   // Reserve parameters
@@ -38,15 +37,14 @@ contract Varanida is Ico, MintableToken, Vesting {
 
   function Varanida()
     Ico(ICO_AMOUNT)
-    MintableToken(DAILY_MINTING_LIMIT, AIRDROP_AMOUNT)
+    MintableToken(AIRDROP_AMOUNT)
     Vesting(ADVISORS_AMOUNT, ADVISORS_BONUS_PERCENTAGE, ADVISORS_BONUS_TARGET,
             FOUNDERS_AMOUNT, FOUNDERS_CLIFF, FOUNDERS_DURATION,
             TECHS_AMOUNT, TECHS_CLIFF, TECHS_DURATION,
             RESERVE_AMOUNT, RESERVE_MAJORITY_PERCENTAGE, RESERVE_DISTRIBUTION_DURATION)
     public {
       totalSupply_ =
-        AIRDROP_AMOUNT
-        + ADVISORS_AMOUNT
+        ADVISORS_AMOUNT
         + FOUNDERS_AMOUNT
         + TECHS_AMOUNT
         + ICO_AMOUNT
