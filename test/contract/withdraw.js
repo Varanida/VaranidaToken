@@ -111,4 +111,137 @@ contract('Varanida - Withdraw', function(accounts) {
       });
   });
 
+  it("should update totalSupply_", function() {
+    var vara, nb_calls = 0;
+    return Varanida.new()
+      .then(function(instance) {
+        vara = instance;
+        nb_calls++;
+        return vara.addOwner(owner1, {from: owner});
+      }).then(function() {
+        nb_calls++;
+        return vara.addOwner(owner2, {from: owner});
+      }).then(function() {
+        nb_calls++;
+        return vara.addOwner(owner3, {from: owner});
+      }).then(function() {
+        nb_calls++;
+        return vara.addOwner(owner4, {from: owner});
+      }).then(function() {
+        nb_calls++;
+        return vara.fixOwners({from: owner});
+      }).then(function(){
+        return Time.increaseTime(4*year);
+      }).then(function() {
+        nb_calls++;
+        return vara.withdraw(receiving_addr1, 110000000*withdrawAmount, {from: owner1});
+      }).then(function() {
+        nb_calls++;
+        return vara.withdraw(receiving_addr1, 110000000*withdrawAmount, {from: owner2});
+      }).then(function() {
+        nb_calls++;
+        return vara.withdraw(receiving_addr1, 110000000*withdrawAmount, {from: owner3});
+      }).then(function() {
+        nb_calls++;
+        return vara.totalSupply({from: owner});
+      }).then(function(result){
+        assert(result.toNumber()===110000000*withdrawAmount);
+        assert(nb_calls === 9);
+      });
+  });
+
+  it("should limit what you can withdraw", function() {
+    var vara, nb_calls = 0;
+    return Varanida.new()
+      .then(function(instance) {
+        vara = instance;
+        nb_calls++;
+        return vara.addOwner(owner1, {from: owner});
+      }).then(function() {
+        nb_calls++;
+        return vara.addOwner(owner2, {from: owner});
+      }).then(function() {
+        nb_calls++;
+        return vara.addOwner(owner3, {from: owner});
+      }).then(function() {
+        nb_calls++;
+        return vara.addOwner(owner4, {from: owner});
+      }).then(function() {
+        nb_calls++;
+        return vara.fixOwners({from: owner});
+      }).then(function(){
+        return Time.increaseTime(year);
+      }).then(function() {
+        nb_calls++;
+        return vara.withdraw(receiving_addr1, 27500001*withdrawAmount, {from: owner1});
+      }).then(function() {
+        nb_calls++;
+        return vara.withdraw(receiving_addr1, 27500001*withdrawAmount, {from: owner2});
+      }).then(function() {
+        nb_calls++;
+        return vara.withdraw(receiving_addr1, 27500001*withdrawAmount, {from: owner3});
+      }).then(function() {
+        assert.fail('This won\'t happen.');
+      }).catch(function(err) {
+        assert(err.message.search('revert') >= 0);
+      }).then(function() {
+        nb_calls++;
+        return vara.withdraw(receiving_addr1, 27500000*withdrawAmount, {from: owner1});
+      }).then(function() {
+        nb_calls++;
+        return vara.withdraw(receiving_addr1, 27500000*withdrawAmount, {from: owner2});
+      }).then(function() {
+        nb_calls++;
+        return vara.withdraw(receiving_addr1, 27500000*withdrawAmount, {from: owner3});
+      }).then(function(){
+        return Time.increaseTime(2*year);
+      }).then(function() {
+        nb_calls++;
+        return vara.withdraw(receiving_addr1, 55000001*withdrawAmount, {from: owner1});
+      }).then(function() {
+        nb_calls++;
+        return vara.withdraw(receiving_addr1, 55000001*withdrawAmount, {from: owner2});
+      }).then(function() {
+        nb_calls++;
+        return vara.withdraw(receiving_addr1, 55000001*withdrawAmount, {from: owner3});
+      }).then(function() {
+        assert.fail('This won\'t happen.');
+      }).catch(function(err) {
+        assert(err.message.search('revert') >= 0);
+      }).then(function(){
+        return Time.increaseTime(2*year);
+      }).then(function() {
+        nb_calls++;
+        return vara.withdraw(receiving_addr1, 82500001*withdrawAmount, {from: owner1});
+      }).then(function() {
+        nb_calls++;
+        return vara.withdraw(receiving_addr1, 82500001*withdrawAmount, {from: owner2});
+      }).then(function() {
+        nb_calls++;
+        return vara.withdraw(receiving_addr1, 82500001*withdrawAmount, {from: owner3});
+      }).then(function() {
+        assert.fail('This won\'t happen.');
+      }).catch(function(err) {
+        // here the message is different
+        // because after 4 years have been passed
+        // the math library send an error with assert()
+        assert(err.message.search('invalid opcode') >= 0);
+      }).then(function() {
+        nb_calls++;
+        return vara.withdraw(receiving_addr1, 82500000*withdrawAmount, {from: owner1});
+      }).then(function() {
+        nb_calls++;
+        return vara.withdraw(receiving_addr1, 82500000*withdrawAmount, {from: owner2});
+      }).then(function() {
+        nb_calls++;
+        return vara.withdraw(receiving_addr1, 82500000*withdrawAmount, {from: owner3});
+      }).then(function() {
+        nb_calls++;
+        return vara.balanceOf(receiving_addr1, {from: owner});
+      }).then(function(result){
+        assert(result.toNumber()===110000000*withdrawAmount);
+        assert(nb_calls === 21);
+      });
+  });
+
 });
