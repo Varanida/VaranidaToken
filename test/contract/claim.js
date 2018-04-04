@@ -146,4 +146,37 @@ contract('Varanida - claim tokens', function(accounts) {
       });
   });
 
+  it("should update totalSupply_", function() {
+    var vara, nb_calls = 0;
+    return Varanida.new() // Redeploy Varanida contract
+      .then(function(instance) {
+        vara = instance;
+        nb_calls++;
+        return vara.allocate(advisor, 101*allocateAmount, 1, {from: owner});
+      }).then(function() {
+        nb_calls++;
+        return vara.allocate(founder, 110*allocateAmount, 2, {from: owner});
+      }).then(function() {
+        nb_calls++;
+        return vara.allocate(technical, 11*allocateAmount, 3, {from: owner});
+      }).then(function(){
+        return Time.increaseTime(2*year);
+      }).then(function(){
+        nb_calls++;
+        return vara.claimTokens(advisor, 101*allocateAmount, 1, {from: advisor});
+      }).then(function(){
+        nb_calls++;
+        return vara.claimTokens(founder, 110*allocateAmount, 2, {from: founder});
+      }).then(function(){
+        nb_calls++;
+        return vara.claimTokens(founder, 11*allocateAmount, 3, {from: technical});
+      }).then(function() {
+        nb_calls++;
+        return vara.totalSupply({from: advisor});
+      }).then(function(result){
+        assert(result.toNumber()===222*allocateAmount);
+        assert(nb_calls === 7);
+      });
+  });
+
 });
