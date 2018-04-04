@@ -1,4 +1,4 @@
-pragma solidity ^0.4.18;
+pragma solidity 0.4.18;
 
 import './MultiOwnable.sol';
 import 'zeppelin-solidity/contracts/token/ERC20/PausableToken.sol';
@@ -46,18 +46,15 @@ contract Reserve is MultiOwnable, PausableToken {
       }
     }
     if(vote_count.mul(100).div(owners.length) >= majority_percentage) {
-      if (now < deployment_date.add(distribution_duration) &&
-          _amount > initial_reserve_amount.mul(now.sub(deployment_date)).div(distribution_duration).sub(total_withdrawed)) {
-        revert();
-      } else {
-        total_withdrawed = total_withdrawed.add(_amount);
-        reserve_amount = reserve_amount.sub(_amount);
-        totalSupply_ = totalSupply_.add(_amount);
-        balances[_address] = balances[_address].add(_amount);
-        Withdraw(_address, _amount);
-        Transfer(address(0), _address, _amount);
-        return true;
-      }
+      require(now > deployment_date.add(distribution_duration) ||
+              _amount <= initial_reserve_amount.mul(now.sub(deployment_date)).div(distribution_duration).sub(total_withdrawed));
+      total_withdrawed = total_withdrawed.add(_amount);
+      reserve_amount = reserve_amount.sub(_amount);
+      totalSupply_ = totalSupply_.add(_amount);
+      balances[_address] = balances[_address].add(_amount);
+      Withdraw(_address, _amount);
+      Transfer(address(0), _address, _amount);
+      return true;
     }
     return false;
   }
