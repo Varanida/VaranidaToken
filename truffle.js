@@ -1,6 +1,6 @@
 var HDWalletProvider = require('truffle-hdwallet-provider');
 
-var mnemonic = 'void artefact fly lobster run cradle benefit portion crumble expose salute image';
+var mnemonic = '<YOUR PRIVATE KEY>';
 
 module.exports = {
   networks: {
