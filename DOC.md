@@ -3,6 +3,7 @@
 ### Varanida.sol (is Ico, MintableToken & Vesting)
 This is the main contract, it contains no functions but is the root of all sub-contracts.
 You will find in it every constant for the initialization of each sub-contracts.
+This also implements the ERC20 standard.
 
 ### Ico.sol
 This contract will be used for the ico.
@@ -85,3 +86,19 @@ However, the advisors will have to wait a fixed amount of time after the contrac
 Tech team and founders, won't have any bonuses,
 and will have to wait a fixed amount of time,
 and won't be able to withdraw all of their tokens until another further date.
+
+ + `function allocate(address _to, uint256 _amount, UserType _type) public onlyOwner returns (bool)`
+
+This function will allow the contract owner to allocate tokens to advisors, founders & the tech team.
+There is a limited amount of tokens you can allocate to each type of users.
+
+ + `claimTokens(address _to, uint256 _amount, UserType _type) public returns (bool)`
+
+ This function is usable by every user wich have tokens allowed.
+ This will let a user withdraw his tokens.
+ This function will fail if the user don't have the enough tokens due or if he have asked them too early.
+ The advisors, if they waited long enough, will be able to ask their bonuses with this function.
+
+ + `function cancelAdvisorBonus(address _to) public onlyOwner returns (bool)`
+
+  This last function, allow the contract owner to cancel the bonus of an advisor.

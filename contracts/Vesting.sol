@@ -50,7 +50,7 @@ contract Vesting is Reserve {
     technicals_duration = _technicals_duration;
   }
 
-  function cancelAdvisorBonus(address _to) public onlyOwner returns (bool success) {
+  function cancelAdvisorBonus(address _to) public onlyOwner returns (bool) {
     if (advisors_grants[_to].bonus) {
       advisors_grants[_to].bonus = false;
       return true;
@@ -59,7 +59,7 @@ contract Vesting is Reserve {
     }
   }
 
-  function allocate(address _to, uint256 _amount, UserType _type) public onlyOwner returns (bool success) {
+  function allocate(address _to, uint256 _amount, UserType _type) public onlyOwner returns (bool) {
     if (_type == UserType.ADVISOR) {
       require(_amount <= advisors_amount_to_distribute);
       advisors_amount_to_distribute = advisors_amount_to_distribute.sub(_amount);
@@ -79,7 +79,7 @@ contract Vesting is Reserve {
     return true;
   }
 
-  function claimTokens(address _to, uint256 _amount, UserType _type) public returns (bool success) {
+  function claimTokens(address _to, uint256 _amount, UserType _type) public returns (bool) {
     uint256 available_to_distribute;
     uint256 cliff = 0;
     uint256 duration = 0;
