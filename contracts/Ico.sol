@@ -1,4 +1,4 @@
-pragma solidity 0.4.18;
+pragma solidity 0.4.19;
 
 import 'zeppelin-solidity/contracts/token/ERC20/BasicToken.sol';
 import 'zeppelin-solidity/contracts/ownership/Ownable.sol';
@@ -39,7 +39,7 @@ contract Ico is BasicToken, Ownable {
     return true;
   }
 
-  function burnUndistributedTokens() public onlyOwner returns (bool success) {
+  function burnUndistributedTokens() public onlyOwner returns (bool) {
     require(ico_amount_to_distribute > 0);
     ico_amount_to_distribute = 0;
     Burn(msg.sender, ico_amount_to_distribute);

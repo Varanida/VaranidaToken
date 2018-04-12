@@ -1,4 +1,4 @@
-pragma solidity 0.4.18;
+pragma solidity 0.4.19;
 
 import './MultiOwnable.sol';
 import 'zeppelin-solidity/contracts/token/ERC20/PausableToken.sol';
