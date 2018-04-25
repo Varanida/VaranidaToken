@@ -21,7 +21,7 @@ contract Varanida is Ico, MintableToken, Vesting {
 
   // Reserve parameters
   uint256 private constant RESERVE_AMOUNT = 110000000 * UNIT;
-  uint256 private constant RESERVE_MAJORITY_PERCENTAGE = 75;
+  uint256 private constant RESERVE_VOTES_REQUIRED = 2;
   uint256 private constant RESERVE_DISTRIBUTION_DURATION = 4 years;
 
   // Vesting parameters
@@ -41,7 +41,7 @@ contract Varanida is Ico, MintableToken, Vesting {
     Vesting(ADVISORS_AMOUNT, ADVISORS_BONUS_PERCENTAGE, ADVISORS_BONUS_TARGET,
             FOUNDERS_AMOUNT, FOUNDERS_CLIFF, FOUNDERS_DURATION,
             TECHS_AMOUNT, TECHS_CLIFF, TECHS_DURATION,
-            RESERVE_AMOUNT, RESERVE_MAJORITY_PERCENTAGE, RESERVE_DISTRIBUTION_DURATION)
+            RESERVE_AMOUNT, RESERVE_VOTES_REQUIRED, RESERVE_DISTRIBUTION_DURATION)
     public {}
 
 }

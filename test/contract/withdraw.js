@@ -9,7 +9,6 @@ contract('Varanida - Withdraw', function(accounts) {
   owner1 = accounts[1],
   owner2 = accounts[2],
   owner3 = accounts[3],
-  owner4 = accounts[4],
   receiving_addr1 = accounts[5],
   receiving_addr2 = accounts[6],
   bad_guy = accounts[7],
@@ -31,9 +30,6 @@ contract('Varanida - Withdraw', function(accounts) {
         return vara.addOwner(owner3, {from: owner});
       }).then(function() {
         nb_calls++;
-        return vara.addOwner(owner4, {from: owner});
-      }).then(function() {
-        nb_calls++;
         return vara.withdraw(receiving_addr1, withdrawAmount, {from: owner1});
       }).then(function() {
         assert.fail('This won\'t happen.');
@@ -49,11 +45,11 @@ contract('Varanida - Withdraw', function(accounts) {
         assert.fail('This won\'t happen.');
       }).catch(function(err) {
         assert(err.message.search('revert') >= 0);
-        assert(nb_calls === 7);
+        assert(nb_calls === 6);
       });
   });
 
-  it("should enable withdraw function with at least 75% of agreement", function() {
+  it("should enable withdraw function with at least 2/3 votes of agreement", function() {
     var vara, nb_calls = 0;
     return Varanida.new()
       .then(function(instance) {
@@ -68,9 +64,6 @@ contract('Varanida - Withdraw', function(accounts) {
         return vara.addOwner(owner3, {from: owner});
       }).then(function() {
         nb_calls++;
-        return vara.addOwner(owner4, {from: owner});
-      }).then(function() {
-        nb_calls++;
         return vara.fixOwners({from: owner});
       }).then(function(){
         return Time.increaseTime(year);
@@ -79,21 +72,15 @@ contract('Varanida - Withdraw', function(accounts) {
         return vara.withdraw(receiving_addr1, withdrawAmount, {from: owner1});
       }).then(function() {
         nb_calls++;
-        return vara.withdraw(receiving_addr1, withdrawAmount, {from: owner2});
+        return vara.withdraw(receiving_addr2, withdrawAmount, {from: owner2});
       }).then(function() {
         nb_calls++;
-        return vara.withdraw(receiving_addr2, withdrawAmount, {from: owner3});
-      }).then(function() {
-        nb_calls++;
-        return vara.withdraw(receiving_addr2, withdrawAmount, {from: owner4});
+        return vara.withdraw(receiving_addr2, 2*withdrawAmount, {from: owner3});
       }).then(function() {
         nb_calls++;
         return vara.balanceOf(receiving_addr2, {from: owner});
       }).then(function(result){
         assert(result.toNumber()===0);
-      }).then(function() {
-        nb_calls++;
-        return vara.withdraw(receiving_addr2, 2*withdrawAmount, {from: owner1});
       }).then(function() {
         nb_calls++;
         return vara.balanceOf(receiving_addr2, {from: owner});
@@ -107,7 +94,7 @@ contract('Varanida - Withdraw', function(accounts) {
         return vara.balanceOf(receiving_addr2, {from: owner});
       }).then(function(result){
         assert(result.toNumber()===withdrawAmount);
-        assert(nb_calls === 14);
+        assert(nb_calls === 11);
       });
   });
 
@@ -126,9 +113,6 @@ contract('Varanida - Withdraw', function(accounts) {
         return vara.addOwner(owner3, {from: owner});
       }).then(function() {
         nb_calls++;
-        return vara.addOwner(owner4, {from: owner});
-      }).then(function() {
-        nb_calls++;
         return vara.fixOwners({from: owner});
       }).then(function(){
         return Time.increaseTime(4*year);
@@ -140,13 +124,10 @@ contract('Varanida - Withdraw', function(accounts) {
         return vara.withdraw(receiving_addr1, 110000000*withdrawAmount, {from: owner2});
       }).then(function() {
         nb_calls++;
-        return vara.withdraw(receiving_addr1, 110000000*withdrawAmount, {from: owner3});
-      }).then(function() {
-        nb_calls++;
         return vara.totalSupply({from: owner});
       }).then(function(result){
         assert(result.toNumber()===110000000*withdrawAmount);
-        assert(nb_calls === 9);
+        assert(nb_calls === 7);
       });
   });
 
@@ -165,9 +146,6 @@ contract('Varanida - Withdraw', function(accounts) {
         return vara.addOwner(owner3, {from: owner});
       }).then(function() {
         nb_calls++;
-        return vara.addOwner(owner4, {from: owner});
-      }).then(function() {
-        nb_calls++;
         return vara.fixOwners({from: owner});
       }).then(function(){
         return Time.increaseTime(year);
@@ -178,9 +156,6 @@ contract('Varanida - Withdraw', function(accounts) {
         nb_calls++;
         return vara.withdraw(receiving_addr1, 27500001*withdrawAmount, {from: owner2});
       }).then(function() {
-        nb_calls++;
-        return vara.withdraw(receiving_addr1, 27500001*withdrawAmount, {from: owner3});
-      }).then(function() {
         assert.fail('This won\'t happen.');
       }).catch(function(err) {
         assert(err.message.search('revert') >= 0);
@@ -190,9 +165,6 @@ contract('Varanida - Withdraw', function(accounts) {
       }).then(function() {
         nb_calls++;
         return vara.withdraw(receiving_addr1, 27500000*withdrawAmount, {from: owner2});
-      }).then(function() {
-        nb_calls++;
-        return vara.withdraw(receiving_addr1, 27500000*withdrawAmount, {from: owner3});
       }).then(function(){
         return Time.increaseTime(2*year);
       }).then(function() {
@@ -201,9 +173,6 @@ contract('Varanida - Withdraw', function(accounts) {
       }).then(function() {
         nb_calls++;
         return vara.withdraw(receiving_addr1, 55000001*withdrawAmount, {from: owner2});
-      }).then(function() {
-        nb_calls++;
-        return vara.withdraw(receiving_addr1, 55000001*withdrawAmount, {from: owner3});
       }).then(function() {
         assert.fail('This won\'t happen.');
       }).catch(function(err) {
@@ -216,9 +185,6 @@ contract('Varanida - Withdraw', function(accounts) {
       }).then(function() {
         nb_calls++;
         return vara.withdraw(receiving_addr1, 82500001*withdrawAmount, {from: owner2});
-      }).then(function() {
-        nb_calls++;
-        return vara.withdraw(receiving_addr1, 82500001*withdrawAmount, {from: owner3});
       }).then(function() {
         assert.fail('This won\'t happen.');
       }).catch(function(err) {
@@ -234,13 +200,10 @@ contract('Varanida - Withdraw', function(accounts) {
         return vara.withdraw(receiving_addr1, 82500000*withdrawAmount, {from: owner2});
       }).then(function() {
         nb_calls++;
-        return vara.withdraw(receiving_addr1, 82500000*withdrawAmount, {from: owner3});
-      }).then(function() {
-        nb_calls++;
         return vara.balanceOf(receiving_addr1, {from: owner});
       }).then(function(result){
         assert(result.toNumber()===110000000*withdrawAmount);
-        assert(nb_calls === 21);
+        assert(nb_calls === 15);
       });
   });
 

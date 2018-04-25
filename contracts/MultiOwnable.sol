@@ -12,8 +12,8 @@ contract MultiOwnable is Ownable {
   mapping(address => bool) private owners_map;
   bool public ownersFixed = false;
 
-  modifier onlyOwners() {
-    require(owners_map[msg.sender]);
+  modifier isOwner(address owner) {
+    require(owners_map[owner]);
     _;
   }
 
