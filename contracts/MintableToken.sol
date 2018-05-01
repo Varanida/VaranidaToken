@@ -22,18 +22,4 @@ contract MintableToken is StandardToken, Ownable {
     return true;
   }
 
-  function mintBatch(address[] _to, uint256[] _amount) onlyOwner public returns (bool) {
-    require(_to.length == _amount.length);
-    uint256 total = 0;
-    for(uint256 i = 0; i < _to.length; i++) {
-      total = total.add(_amount[i]);
-      balances[_to[i]] = balances[_to[i]].add(_amount[i]);
-      Mint(_to[i], _amount[i]);
-      Transfer(address(0), _to[i], _amount[i]);
-    }
-    quantity_to_mint = quantity_to_mint.sub(total);
-    totalSupply_ = totalSupply_.add(total);
-    return true;
-  }
-
 }
