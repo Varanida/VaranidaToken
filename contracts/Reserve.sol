@@ -1,10 +1,10 @@
 pragma solidity 0.4.19;
 
-import './MultiOwnable.sol';
+import './MultiVotes.sol';
 import 'zeppelin-solidity/contracts/token/ERC20/PausableToken.sol';
 import 'zeppelin-solidity/contracts/math/SafeMath.sol';
 
-contract Reserve is MultiOwnable, PausableToken {
+contract Reserve is MultiVotes, PausableToken {
   using SafeMath for uint256;
 
   event Withdraw(address indexed to, uint256 amount);
@@ -37,11 +37,11 @@ contract Reserve is MultiOwnable, PausableToken {
     return reserve_amount;
   }
 
-  function withdraw(address _address, uint256 _amount) cantChangeOwners isOwner(msg.sender) public returns (bool) {
+  function withdraw(address _address, uint256 _amount) cantChangeVoters isVoter(msg.sender) public returns (bool) {
     uint256 vote_count = 0;
     votes[msg.sender] = vote({_address: _address, _amount: _amount});
-    for (uint256 i = 0; i < owners.length; i++) {
-      if(votes[owners[i]]._address == _address && votes[owners[i]]._amount == _amount) {
+    for (uint256 i = 0; i < voters.length; i++) {
+      if(votes[voters[i]]._address == _address && votes[voters[i]]._amount == _amount) {
         vote_count = vote_count + 1;
         if(vote_count == votes_required) {
           require(now > deployment_date.add(distribution_duration) ||

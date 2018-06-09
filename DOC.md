@@ -39,22 +39,23 @@ This second function allocate N fixed amounts of tokens to N fixed addresses.
 Not all the addresses will receive the same amount of tokens.
 Before using this function, be sure that an address and the corresponding amount of token to distribute have the same index.
 
-### MultiOwnable.sol
+### MultiVoters.sol
 
 This contract let the contract owner define a list of owners until the list is locked (fixed),
-this list will be useful for some the __Reserve__ contract.
+this list will be useful for some the __Reserve__ contract. Owners will be here called voters
+to avoid confusions.
 
- + `function addOwner(address new_owner) onlyOwner canChangeOwners public`
+ + `function addVoter(address new_voter) onlyOwner canChangeVoters public`
 
- This function let the contract owner add a new owner to the list of owners.
+ This function let the contract owner add a new owner to the list of voters.
 
- + `function removeOwner(address old_owner) onlyOwner canChangeOwners public`
+ + `function removeVoter(address old_voter) onlyOwner canChangeVoters public`
 
- And this function let the contract owner remove one of the address from the list of owners.
+ And this function let the contract owner remove one of the address from the list of voters.
 
- + `function fixOwners() onlyOwner canChangeOwners public returns (bool)`
+ + `function fixVoters() onlyOwner canChangeVoters public returns (bool)`
 
-This function lock the list of owners and the contract owner won't be able to change the list.
+This function lock the list of voters and the contract owner won't be able to change the list.
 This is to prevent the fact that the contract owner can add some new addresses that have control on and control the result of a vote (_see next contract_).
 
 ### Reserve.sol (is MultiOwnable)

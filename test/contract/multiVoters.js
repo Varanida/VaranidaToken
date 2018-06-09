@@ -17,17 +17,17 @@ contract('Varanida - ICO', function(accounts) {
       .then(function(instance) {
         vara = instance;
         nb_calls++;
-        return vara.addOwner(random_guy1, {from: owner});
+        return vara.addVoter(random_guy1, {from: owner});
       }).then(function() {
         nb_calls++;
-        return vara.addOwner(random_guy2, {from: bad_guy});
+        return vara.addVoter(random_guy2, {from: bad_guy});
       }).then(function() {
         assert.fail('This won\'t happen.');
       }).catch(function(err) {
         assert(err.message.search('revert') >= 0);
       }).then(function() {
         nb_calls++;
-        return vara.removeOwner(random_guy1, {from: bad_guy});
+        return vara.removeVoter(random_guy1, {from: bad_guy});
       }).then(function() {
         assert.fail('This won\'t happen.');
       }).catch(function(err) {
@@ -42,39 +42,39 @@ contract('Varanida - ICO', function(accounts) {
       .then(function(instance) {
         vara = instance;
         nb_calls++;
-        return vara.addOwner(random_guy1, {from: owner});
+        return vara.addVoter(random_guy1, {from: owner});
       }).then(function() {
         nb_calls++;
-        return vara.addOwner(random_guy2, {from: owner});
+        return vara.addVoter(random_guy2, {from: owner});
       }).then(function() {
         nb_calls++;
-        return vara.addOwner(random_guy3, {from: owner});
+        return vara.addVoter(random_guy3, {from: owner});
       }).then(function() {
         nb_calls++;
-        return vara.removeOwner(random_guy1, {from: owner});
+        return vara.removeVoter(random_guy1, {from: owner});
       }).then(function() {
         nb_calls++;
-        return vara.removeOwner(random_guy1, {from: owner});
+        return vara.removeVoter(random_guy1, {from: owner});
       }).then(function() {
         assert.fail('This won\'t happen.');
       }).catch(function(err) {
         assert(err.message.search('revert') >= 0);
       }).then(function() {
         nb_calls++;
-        return vara.removeOwner(random_guy3, {from: owner});
+        return vara.removeVoter(random_guy3, {from: owner});
       }).then(function() {
         nb_calls++;
-        return vara.removeOwner(random_guy3, {from: owner});
+        return vara.removeVoter(random_guy3, {from: owner});
       }).then(function() {
         assert.fail('This won\'t happen.');
       }).catch(function(err) {
         assert(err.message.search('revert') >= 0);
       }).then(function() {
         nb_calls++;
-        return vara.removeOwner(random_guy2, {from: owner});
+        return vara.removeVoter(random_guy2, {from: owner});
       }).then(function() {
         nb_calls++;
-        return vara.removeOwner(random_guy2, {from: owner});
+        return vara.removeVoter(random_guy2, {from: owner});
       }).then(function() {
         assert.fail('This won\'t happen.');
       }).catch(function(err) {
@@ -89,23 +89,23 @@ contract('Varanida - ICO', function(accounts) {
       .then(function(instance) {
         vara = instance;
         nb_calls++;
-        return vara.addOwner(random_guy1, {from: owner});
+        return vara.addVoter(random_guy1, {from: owner});
       }).then(function() {
         nb_calls++;
-        return vara.addOwner(random_guy2, {from: owner});
+        return vara.addVoter(random_guy2, {from: owner});
       }).then(function() {
         nb_calls++;
-        return vara.fixOwners({from: owner});
+        return vara.fixVoters({from: owner});
       }).then(function() {
         nb_calls++;
-        return vara.addOwner(random_guy3, {from: owner});
+        return vara.addVoter(random_guy3, {from: owner});
       }).then(function() {
         assert.fail('This won\'t happen.');
       }).catch(function(err) {
         assert(err.message.search('revert') >= 0);
       }).then(function() {
         nb_calls++;
-        return vara.removeOwner(random_guy1, {from: owner});
+        return vara.removeVoter(random_guy1, {from: owner});
       }).then(function() {
         assert.fail('This won\'t happen.');
       }).catch(function(err) {
