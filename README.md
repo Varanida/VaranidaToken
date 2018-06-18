@@ -1,4 +1,6 @@
-# Varanida Contract
+# VaranidaToken
+
+ERC20 contract for Varanida Token (VAD).
 
 ## How to install
 
