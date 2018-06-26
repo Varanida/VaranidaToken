@@ -1,6 +1,6 @@
-var HDWalletProvider = require('truffle-hdwallet-provider');
+const HDWalletProvider = require("truffle-hdwallet-provider");
 
-var mnemonic = '<YOUR PRIVATE KEY>';
+const mnemonic = "<mnemonic phrase>";
 
 module.exports = {
   networks: {
@@ -10,8 +10,17 @@ module.exports = {
       network_id: '*'
     },
     dev: {
-      // provider: new HDWalletProvider(mnemonic, 'http://dev.varanida.com:8546', 0),
+      provider:function(){
+        return new HDWalletProvider(mnemonic, "<uri>")
+      },
       network_id: '*'
+    }
+  },
+  solc: {
+    version: "0.4.24",
+    optimizer: {
+      enabled: true,
+      runs: 200
     }
   }
 };
