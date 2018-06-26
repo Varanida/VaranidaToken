@@ -1,4 +1,4 @@
-pragma solidity 0.4.19;
+pragma solidity ^0.4.24;
 
 import './MultiVotes.sol';
 import 'zeppelin-solidity/contracts/token/ERC20/PausableToken.sol';
@@ -23,8 +23,8 @@ contract Reserve is MultiVotes, PausableToken {
   uint256 private votes_required;
   uint256 internal reserve_amount;
 
-  function Reserve(uint256 _reserve_amount, uint256 _votes_required,
-                   uint256 _distribution_duration) public {
+  constructor(uint256 _reserve_amount, uint256 _votes_required,
+              uint256 _distribution_duration) public {
     initial_reserve_amount = _reserve_amount;
     total_withdrawed = 0;
     deployment_date = now;
@@ -50,8 +50,8 @@ contract Reserve is MultiVotes, PausableToken {
           reserve_amount = reserve_amount.sub(_amount);
           totalSupply_ = totalSupply_.add(_amount);
           balances[_address] = balances[_address].add(_amount);
-          Withdraw(_address, _amount);
-          Transfer(address(0), _address, _amount);
+          emit Withdraw(_address, _amount);
+          emit Transfer(address(0), _address, _amount);
           return true;
         }
       }

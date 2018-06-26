@@ -1,4 +1,4 @@
-pragma solidity 0.4.19;
+pragma solidity ^0.4.24;
 
 import 'zeppelin-solidity/contracts/ownership/Ownable.sol';
 
@@ -30,7 +30,7 @@ contract MultiVotes is Ownable {
   function fixVoters() onlyOwner canChangeVoters public returns (bool) {
     require(voters.length > 0);
     votersFixed = true;
-    ChangeVotersFinished();
+    emit ChangeVotersFinished();
     return true;
   }
 
@@ -38,7 +38,7 @@ contract MultiVotes is Ownable {
     require(!voters_map[new_voter]);
     voters_map[new_voter] = true;
     voters.push(new_voter);
-    VoterAddition(new_voter);
+    emit VoterAddition(new_voter);
   }
 
   function removeVoter(address old_voter) onlyOwner canChangeVoters public {
@@ -48,7 +48,7 @@ contract MultiVotes is Ownable {
       if (voters[i] == old_voter) {
         voters[i] = voters[voters.length - 1];
         voters.length = voters.length - 1;
-        VoterRemoval(old_voter);
+        emit VoterRemoval(old_voter);
         return;
       }
     }

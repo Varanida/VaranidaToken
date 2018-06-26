@@ -1,4 +1,4 @@
-pragma solidity 0.4.19;
+pragma solidity ^0.4.24;
 
 import 'zeppelin-solidity/contracts/token/ERC20/BasicToken.sol';
 import 'zeppelin-solidity/contracts/ownership/Ownable.sol';
@@ -12,7 +12,7 @@ contract Ico is BasicToken, Ownable {
 
   uint256 private ico_amount_to_distribute;
 
-  function Ico(uint256 _ico_amount) public {
+  constructor(uint256 _ico_amount) public {
     ico_amount_to_distribute = _ico_amount;
   }
 
@@ -20,15 +20,15 @@ contract Ico is BasicToken, Ownable {
     ico_amount_to_distribute = ico_amount_to_distribute.sub(_amount);
     totalSupply_ = totalSupply_.add(_amount);
     balances[_to] = balances[_to].add(_amount);
-    Allocate(_to, _amount);
-    Transfer(address(0), _to, _amount);
+    emit Allocate(_to, _amount);
+    emit Transfer(address(0), _to, _amount);
     return true;
   }
 
   function burnUndistributedTokens() public onlyOwner returns (bool) {
     require(ico_amount_to_distribute > 0);
     ico_amount_to_distribute = 0;
-    Burn(msg.sender, ico_amount_to_distribute);
+    emit Burn(msg.sender, ico_amount_to_distribute);
     return true;
   }
 
